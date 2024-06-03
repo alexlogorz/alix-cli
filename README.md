@@ -10,7 +10,7 @@ This is a CLI tool developed in NodeJS. Its purpose is to extract product data, 
 
 ## Installation
 
-To install and run alix cli, follow these steps:
+Before you begin, make sure you have [NodeJs](https://nodejs.org/en/download/package-manager) installed on your machine. After installation, follow these steps:
 
 1. Clone the repository:
    ```bash
