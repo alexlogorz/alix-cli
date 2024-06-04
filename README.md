@@ -35,13 +35,14 @@ Open a terminal and type the following for a list of available commands and vers
 alix help
 ```
 
-**Important**: Double quotation marks must enclose the products link.
-
-Example usage
+Example usage to gets the products title
 ``` bash
 alix -t "link to aliexpress product"
 ```
-This will extract the title from the AliExpress product.
+
+**Important**
+1. Double quotation marks must enclose the products link
+2. This tool has only been tested on https://aliexpress.us 
 
 ## Support
 If you need assistance regarding this tool, please reach me at alogorzmedia@gmail.com
