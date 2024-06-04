@@ -6,7 +6,8 @@ const folderName = 'product_images';
 const folderPath = path.join(process.cwd(), folderName);
 const greenText = '\x1b[32m';
 const resetText = '\x1b[0m';
-
+const apiKeyName = 'GEMINI_API_KEY'
+ 
 function printHelp() {
     console.log(`${greenText}
      _____     ____       ___  ____  ___
@@ -25,7 +26,16 @@ function printHelp() {
     4. Type alix help for available commands and version info.\n`)
 }
 
-/** @returns {number} The number of deleted images */
+/** @param {string} value The value of your api key to be set */
+function setApiKey(value) {
+  // __dirname is used to get the directory where the script is located.
+  const scriptDirectory = __dirname;
+  const envFilePath = path.join(scriptDirectory, '.env');
+  fs.writeFileSync(envFilePath, `${apiKeyName}=${value}\n`, { flag: 'w' });
+}
+
+/** 
+ * @returns {number} The number of deleted images */
 function deleteImages() {
     let numOfImagesDeleted = 0;
     if (fs.existsSync(folderPath)) {
@@ -39,7 +49,9 @@ function deleteImages() {
     return numOfImagesDeleted
 }
 
-/** @returns {[string]} An array of the image urls */
+/** 
+ * @param {string} url The link to the product
+ * @returns {[string]} An array of the image urls */
 async function downloadImagesFromAliExpress(url) {
     const browser = await puppeteer.launch();
     const page = await browser.newPage();
@@ -74,7 +86,9 @@ async function downloadImagesFromAliExpress(url) {
     return imageUrls;
 }
 
-  /** @returns {string} The product title from Aliexpress */
+  /** 
+   * @param {string} url The link to the product
+   * @returns {string} The product title from Aliexpress */
   async function getTitleFromAliExpress(url) {
     const browser = await puppeteer.launch();
     const page = await browser.newPage();
@@ -91,4 +105,13 @@ async function downloadImagesFromAliExpress(url) {
     return title
   }
 
-module.exports = { fs, path, deleteImages, downloadImagesFromAliExpress, getTitleFromAliExpress, printHelp, folderName, folderPath, greenText, resetText }
+module.exports = { 
+  setApiKey, 
+  deleteImages, 
+  downloadImagesFromAliExpress, 
+  getTitleFromAliExpress,
+  printHelp, 
+  folderName, 
+  folderPath, 
+  greenText, 
+  resetText }
