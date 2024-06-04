@@ -54,7 +54,8 @@ async function downloadImagesFromAliExpress(url) {
       const urls = [];
   
       images.forEach(img => {
-        urls.push(img.getAttribute('src'));
+        const imgUrl = img.getAttribute('src').replace('_80x80', '')
+        urls.push(imgUrl);
       });
   
       return urls;
@@ -71,7 +72,7 @@ async function downloadImagesFromAliExpress(url) {
   
     await browser.close();
     return imageUrls;
-  }
+}
 
   /** @returns {string} The product title from Aliexpress */
   async function getTitleFromAliExpress(url) {
@@ -88,6 +89,6 @@ async function downloadImagesFromAliExpress(url) {
     
     await browser.close(); 
     return title
-}
+  }
 
 module.exports = { deleteImages, downloadImagesFromAliExpress, getTitleFromAliExpress, printHelp, folderName, folderPath, greenText, resetText }
