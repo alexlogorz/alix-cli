@@ -6,3 +6,6 @@ node_modules/
 
 # Ignore .vscode directory (Visual Studio Code)
 .vscode/
+
+# Ignore environment variables
+.env

@@ -1,17 +1,23 @@
 #!/usr/bin/env node
 
-const helpers = require('./helpers')
+require('dotenv').config()
+require('./helpers')
 
 const args = process.argv.slice(2);
+const envFilePath = '.env';
 
+// Create env file if it doesnt exist
+if (!fs.existsSync(envFilePath)) 
+    fs.writeFileSync(envFilePath, '');
+   
 function main() {
     // matches the command alix -t 'product_url'
     if (args.length === 2 && args[0] === '-t') {
         const url = args[1];
         console.log('\nFetching url...\n')
-        helpers.getTitleFromAliExpress(url)
+        getTitleFromAliExpress(url)
         .then(response => {
-            console.log(`${helpers.greenText}Product title:${helpers.resetText} ${response}\n`)
+            console.log(`${greenText}Product title:${resetText} ${response}\n`)
         })
         .catch(error => {
             console.error(`Something went wrong: ${error}\n`)
@@ -22,9 +28,9 @@ function main() {
     else if (args.length === 2 && args[0] === '-p') {
         const url = args[1];
         console.log('\nFetching url...\n')
-        helpers.downloadImagesFromAliExpress(url)
+        downloadImagesFromAliExpress(url)
         .then(response => {
-            console.log(`${helpers.greenText}${response.length} images${helpers.resetText} downloaded into ${helpers.folderPath}\n`)
+            console.log(`${greenText}${response.length} images${resetText} downloaded into ${folderPath}\n`)
         })
         .catch(error => {
             console.error(`Something went wrong: ${error}\n`)
@@ -33,13 +39,13 @@ function main() {
     } 
     // matches the command alix clean
     else if (args.length === 1 && args[0] === 'clean') {
-        console.log(`\nCleaning ${helpers.folderPath} ...\n`)
-        const numOfImagesDeleted = helpers.deleteImages();
-        console.log(`${helpers.greenText}${numOfImagesDeleted} images${helpers.resetText} deleted from ${helpers.folderPath}\n`)
+        console.log(`\nCleaning ${folderPath} ...\n`)
+        const numOfImagesDeleted = deleteImages();
+        console.log(`${greenText}${numOfImagesDeleted} images${resetText} deleted from ${folderPath}\n`)
     }  
     // matches the comand alix help
     else if (args.length === 1 && args[0] === 'help') {
-        helpers.printHelp();
+        printHelp();
     } 
     // Any other command will fail
     else {

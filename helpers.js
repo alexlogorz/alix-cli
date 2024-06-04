@@ -91,4 +91,4 @@ async function downloadImagesFromAliExpress(url) {
     return title
   }
 
-module.exports = { deleteImages, downloadImagesFromAliExpress, getTitleFromAliExpress, printHelp, folderName, folderPath, greenText, resetText }
+module.exports = { fs, path, deleteImages, downloadImagesFromAliExpress, getTitleFromAliExpress, printHelp, folderName, folderPath, greenText, resetText }
