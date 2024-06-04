@@ -50,8 +50,8 @@ function main() {
         console.log(`${greenText}${numOfImagesDeleted} images${resetText} deleted from ${folderPath}\n`)
     }  
     // matches the command alix set 'api_key_value'
-    else if (args.length === 1 && args[0] === 'set') {
-        console.log(`\nSetting your api key for google Gemini ai ...\n`)
+    else if (args.length === 2 && args[0] === 'set') {
+        console.log(`\nSetting your api key ...\n`)
         const keyValue = args[1]
         setApiKey(keyValue);
         console.log(`${greenText}Your api key has been set.${resetText}\n`)

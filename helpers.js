@@ -20,10 +20,11 @@ function printHelp() {
     console.log('Alix (Ali extract) is a tool for getting product data from AliExpress. Developed by Alex Logorz.')
     console.log(`
     Available commands:
-    1. Type alix -t 'product_url' for product title.
-    2. Type alix -p 'product_url' for product pictures. 
-    3. Type alix clean to clear all images from folder.
-    4. Type alix help for available commands and version info.\n`)
+    1. Type alix -t "your_product_url" for product title.
+    2. Type alix -p "your_product_url" for product pictures. 
+    3. Type alix set "your_api_key_value" to set your api key.
+    4. Type alix clean to clear all images from folder.
+    5. Type alix help for available commands and version info.\n`)
 }
 
 /** @param {string} value The value of your api key to be set */
