@@ -4,9 +4,20 @@ This is a CLI tool developed in NodeJS. Its purpose is to extract product data, 
 
 ## Table of Contents
 
+- [Gemini AI](#gemini-ai)
 - [Installation](#installation)
 - [Usage](#usage)
 - [Support](#support)
+
+## Gemini AI
+This tool uses Google's Gemini AI which requires an api key. It can craft AliExpress product descriptions based on the product titles, leveraging advanced language understanding to enhance visibility, sales and save you time.
+
+#### Obtaining API Key
+1. Using your google account, sign into [Google AI Studio](https://ai.google.dev/aistudio)
+2. Click on the **Get API Key** button. This will create an api key and new project id for you.
+
+#### Important
+If you use Gemini API from a project that has billing enabled, your use will be subject to [pay-as-you-go](https://ai.google.dev/pricing?_gl=1*czahyb*_ga*Nzk0MjIzOTI2LjE3MTc1MDczNDc.*_ga_P1DBVKWT6V*MTcxNzUzMzI4Ny4zLjEuMTcxNzUzNTI2NS42MC4wLjE0Njc2OTIxOTI.) pricing. 
 
 ## Installation
 
@@ -30,18 +41,30 @@ Before you begin, make sure you have [NodeJs](https://nodejs.org/en/download/pac
    ```
 
 ## Usage
-Open a terminal and type the following for a list of available commands and version info.
+Show a list of available commands and version info
 ``` bash
 alix help
 ```
 
-Example usage to gets the products title
+Sets your api key
 ``` bash
-alix -t "link to aliexpress product"
+alix set "your_gemini_api_key"
+```
+Gets the products title
+``` bash
+alix -t "link_to_aliexpress_product"
+```
+Downloads all the pictures into a folder
+``` bash
+alix -p "link_to_aliexpress_product"
+```
+Removes all the pictures from the folder
+``` bash
+alix clean
 ```
 
 **Important**
-1. Double quotation marks must enclose the products link
+1. Your api key and product links must be enclosed in double quotation marks.
 2. This tool has only been tested on https://aliexpress.us 
 
 ## Support
