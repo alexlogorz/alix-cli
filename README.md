@@ -34,11 +34,12 @@ Open a terminal and type the following for a list of available commands and vers
 ``` bash
 alix help
 ```
-**Tip**: For commands requiring urls, be sure to surround them with single quotation marks. 
 
-Example
+**Important**: Double quotation marks must enclose the products link.
+
+Example usage
 ``` bash
-alix -t 'my_product_url'
+alix -t "link to aliexpress product"
 ```
 This will extract the title from the AliExpress product.
 
