@@ -35,7 +35,11 @@ Before you begin, make sure you have [NodeJs](https://nodejs.org/en/download/pac
    ```bash
    npm install
    ```
-4. Install the package globally. This will allow you to use the cli from anywhere.
+4. Build and compile the typescript code
+   ```bash
+    npm run build
+   ```
+5. Now you can install the package globally. This will allow you to use the cli from anywhere.
    ```bash
     npm install -g .
    ```
