@@ -1,3 +1,5 @@
+#!/usr/bin/env node
+
 import { AlixCLI } from "./AlixCLI"; 
 import { TitleCommand } from "./commands/TitleCommand";
 import { HelpCommand } from "./commands/HelpCommand";
