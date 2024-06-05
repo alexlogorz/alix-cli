@@ -6,13 +6,14 @@ class AlixCLI {
         this.commands = commands;
     }
     parse(args) {
-        const name = args[0];
-        const url = args[1];
-        const command = this.getCommand(name);
-        if (!command)
+        const commandName = args[0];
+        const commandParam = args[1];
+        const commandInstance = this.getCommand(commandName);
+        if (!commandInstance)
             throw new Error('Invalid command. Type alix help for more information.');
-        command.url = url;
-        this.execute(command);
+        commandInstance.url = commandParam;
+        commandInstance.apiKey = commandParam;
+        this.execute(commandInstance);
     }
     getCommand(name) {
         this.commands.forEach(command => {
@@ -22,7 +23,10 @@ class AlixCLI {
         return null;
     }
     execute(command) {
-        command.execute();
+        command.execute()
+            .then(response => {
+            console.log(response);
+        });
     }
 }
 exports.AlixCLI = AlixCLI;

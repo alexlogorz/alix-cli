@@ -12,25 +12,28 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.TitleCommand = void 0;
-const puppeteer_1 = __importDefault(require("puppeteer"));
-class TitleCommand {
+exports.CleanCommand = void 0;
+const fs_1 = __importDefault(require("fs"));
+const path_1 = __importDefault(require("path"));
+class CleanCommand {
     constructor(name) {
         this.name = name;
+        this.folderName = 'product_images';
+        this.folderPath = path_1.default.join(process.cwd(), this.folderName);
     }
     execute() {
         return __awaiter(this, void 0, void 0, function* () {
-            const browser = yield puppeteer_1.default.launch();
-            const page = yield browser.newPage();
-            yield page.goto(this.url || "");
-            yield page.waitForSelector('h1[data-pl="product-title"]');
-            const title = yield page.evaluate(() => {
-                const titleElement = document.querySelector('h1[data-pl="product-title"]');
-                return (titleElement === null || titleElement === void 0 ? void 0 : titleElement.innerText) || "";
-            });
-            yield browser.close();
-            return "\x1b[32m" + "Product title: " + title + "\x1b[0m";
+            let numOfImagesDeleted = 0;
+            if (fs_1.default.existsSync(this.folderPath)) {
+                const files = fs_1.default.readdirSync(this.folderPath);
+                files.forEach(file => {
+                    const fileToBeDeleted = path_1.default.join(this.folderPath, file);
+                    fs_1.default.unlinkSync(fileToBeDeleted);
+                    numOfImagesDeleted += 1;
+                });
+            }
+            return "\x1b[32m" + numOfImagesDeleted + " images deleted from " + this.folderPath + "\x1b[0m";
         });
     }
 }
-exports.TitleCommand = TitleCommand;
+exports.CleanCommand = CleanCommand;
