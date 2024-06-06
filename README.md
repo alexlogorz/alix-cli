@@ -1,6 +1,6 @@
 # Alix CLI
 
-This is a CLI tool developed in NodeJS. Its purpose is to extract product data, such as titles, images and more from AliExpress.
+Alix is a CLI tool that extracts product data and images from AliExpress. Moreover, it leverages generative AI to craft product descriptions for you.
 
 ## Table of Contents
 
