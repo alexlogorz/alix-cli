@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 
-import { AlixCLI } from "./AlixCLI"; 
+import { Invoker } from "./Invoker"; 
 import { TitleCommand } from "./commands/TitleCommand";
 import { HelpCommand } from "./commands/HelpCommand";
 import { CleanCommand } from "./commands/CleanCommand";
@@ -23,6 +23,6 @@ const commands = [
 
 
 
-const alix = new AlixCLI(commands);
+const alix = new Invoker(commands);
 
-alix.executeAsync();
+alix.invokeCommand();

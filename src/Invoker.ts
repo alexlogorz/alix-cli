@@ -1,13 +1,11 @@
 import { ICommand } from './abstractions/ICommand';
 import { NotFoundException } from './abstractions/exceptions';
 
-export class AlixCLI implements ICommand {
+export class Invoker {
 
     private readonly commandName: string;
     private readonly commandParam?: string;
     private commandInstance?: ICommand;
-
-    // private readonly args: Array<string>;
 
     constructor(
         private readonly commands: Array<ICommand>
@@ -23,11 +21,6 @@ export class AlixCLI implements ICommand {
         this.commandParam = cmdParam;
     }
 
-    public get name(){
-        return 'command executioner';
-    }
-
-
     public setStrategy(cmdName: string): void {
         // TODO: regex for case insensitiveness
         const cmdContext = this.commands.find(cmd => cmd.name === cmdName);
@@ -38,7 +31,7 @@ export class AlixCLI implements ICommand {
         this.commandInstance = cmdContext;
     }
 
-    public async executeAsync(): Promise<string>
+    public async invokeCommand(): Promise<void>
     {
         this.setStrategy(this.commandName);
 
@@ -48,7 +41,6 @@ export class AlixCLI implements ICommand {
         
         const output = await this.commandInstance!.executeAsync();
         console.log(output);
-        return output;
     }
 
 }
