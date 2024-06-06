@@ -8,10 +8,10 @@ import { ImageCommand } from "./commands/ImageCommand";
 import { SetCommand } from "./commands/SetCommand";
 
 const commands: ICommand[] = [ 
-    new TitleCommand('-t'), 
+    new TitleCommand('title'), 
     new HelpCommand('help'),
     new CleanCommand('clean'),
-    new ImageCommand('-p'),
+    new ImageCommand('images'),
     new SetCommand('set')
  ]
 const alix = new AlixCLI(commands);

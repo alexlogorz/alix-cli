@@ -56,11 +56,11 @@ alix set "your_gemini_api_key"
 ```
 Gets the products title
 ``` bash
-alix -t "link_to_aliexpress_product"
+alix title "link_to_aliexpress_product"
 ```
 Downloads all the pictures into a folder
 ``` bash
-alix -p "link_to_aliexpress_product"
+alix images "link_to_aliexpress_product"
 ```
 Removes all the pictures from the folder
 ``` bash

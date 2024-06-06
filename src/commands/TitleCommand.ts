@@ -13,16 +13,19 @@ export class TitleCommand implements ICommand {
         const page: Page = await browser.newPage();
         
         await page.goto(this.url || "");
-        await page.waitForSelector('h1[data-pl="product-title"]');
         
         const title: string = await page.evaluate(() => {
-            const titleElement: HTMLElement | null = document.querySelector('h1[data-pl="product-title"]');
-            return titleElement?.innerText || "";
+            const titleElement: Element | null = document.querySelector('h1[data-pl="product-title"]');
+
+            if(!titleElement) 
+                throw Error("No title found");
+
+            return titleElement?.textContent || ""
         });
         
         await browser.close(); 
 
-        return "\x1b[32m" + "Product title: " + title + "\x1b[0m"
+        return `\x1b[32mProduct title:\x1b[0m ${title}`
     }
 
     

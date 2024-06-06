@@ -1,37 +1,46 @@
 export class AlixCLI {
     private commands: ICommand[];
-    
+    private commandName?: string;
+    private commandParam?: string;
+    private commandInstance?: ICommand;
+
     constructor(commands: ICommand[]) { 
         this.commands = commands 
     }
 
     public parse(args: string[]): void {
-        const commandName: string = args[0]
-        const commandParam: string = args[1]
-        const commandInstance: ICommand = this.getCommand(commandName)
+        this.commandName = args[0]
+        this.commandParam = args[1]
+        this.setCommandInstance(this.commandName)
         
-        if(!commandInstance) 
-            throw new Error('Invalid command. Type alix help for more information.')
+        if(!this.commandInstance) {
+            console.error('Invalid command. Type alix help for more info.')
+            process.exit(0)
+        }
         
-        commandInstance.url = commandParam;
-        commandInstance.apiKey = commandParam;
-        
-        this.execute(commandInstance)
+        this.commandInstance.url = this.commandParam;
+        this.commandInstance.apiKey = this.commandParam;
+
+        this.execute(this.commandInstance)
     }
 
-    private getCommand(name: string): any {
-        this.commands.forEach(command => {
-            if(command.name === name)
-                return command
-        })
-
-        return null;
+    private setCommandInstance(name: string): void {
+        for (const command of this.commands) {
+            if(command.name === name) {
+                this.commandInstance = command
+                return;
+            }
+        }
     }
 
     private execute(command: ICommand): void {
         command.execute()
         .then(response => {
             console.log(response)
+        })
+        .catch(error => {
+            console.error("\x1b[32mAn error occured:\x1b[0m", error.message)
+            process.exit(0)
         })
     }
 
