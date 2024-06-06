@@ -1,49 +1,54 @@
-export class AlixCLI {
-    private commands: ICommand[];
-    private commandName?: string;
-    private commandParam?: string;
+import { ICommand } from './abstractions/ICommand';
+import { NotFoundException } from './abstractions/exceptions';
+
+export class AlixCLI implements ICommand {
+
+    private readonly commandName: string;
+    private readonly commandParam?: string;
     private commandInstance?: ICommand;
 
-    constructor(commands: ICommand[]) { 
-        this.commands = commands 
-    }
+    // private readonly args: Array<string>;
 
-    public parse(args: string[]): void {
-        this.commandName = args[0]
-        this.commandParam = args[1]
-        this.setCommandInstance(this.commandName)
-        
-        if(!this.commandInstance) {
-            console.error('Invalid command. Type alix help for more info.')
-            process.exit(0)
+    constructor(
+        private readonly commands: Array<ICommand>
+    )
+    {
+        if(!Array.isArray(this.commands)) {
+            throw new Error('Argument Exception');
         }
-        
-        this.commandInstance.url = this.commandParam;
-        this.commandInstance.apiKey = this.commandParam;
-
-        this.execute(this.commandInstance)
+        // TODO: validation logic for this...
+        const args = process.argv.slice(2);
+        const [cmdName, cmdParam] = args;
+        this.commandName = cmdName;// TODO: if this is not defined we need to throw an error! or maybe default to help command
+        this.commandParam = cmdParam;
     }
 
-    private setCommandInstance(name: string): void {
-        for (const command of this.commands) {
-            if(command.name === name) {
-                this.commandInstance = command
-                return;
-            }
+    public get name(){
+        return 'command executioner';
+    }
+
+
+    public setStrategy(cmdName: string): void {
+        // TODO: regex for case insensitiveness
+        const cmdContext = this.commands.find(cmd => cmd.name === cmdName);
+        if(!cmdContext) {
+            // TODO: Create custom error type
+            throw new NotFoundException(cmdName);
         }
+        this.commandInstance = cmdContext;
     }
 
-    private execute(command: ICommand): void {
-        command.execute()
-        .then(response => {
-            console.log(response)
-        })
-        .catch(error => {
-            console.error("\x1b[32mAn error occured:\x1b[0m", error.message)
-            process.exit(0)
-        })
-    }
+    public async executeAsync(): Promise<string>
+    {
+        this.setStrategy(this.commandName);
 
+        // TODO: remove url and apiKey from ICommand interface
+        this.commandInstance!.url = this.commandParam;
+        this.commandInstance!.apiKey = this.commandParam;
+        
+        const output = await this.commandInstance!.executeAsync();
+        console.log(output);
+        return output;
+    }
 
 }
-

@@ -1,18 +1,21 @@
-import fs from 'fs'
-import path from 'path'
+import fs from 'node:fs';
+import path from 'node:path';
+import { ICommand } from './../abstractions/ICommand';
 
 export class CleanCommand implements ICommand {
-    public name: string;
     private folderName: string;
     private folderPath: string;
-
-    constructor(name: string) {
-        this.name = name
-        this.folderName = 'product_images'
-        this.folderPath = path.join(process.cwd(), this.folderName)
+    public get name()
+    {
+        return 'clean';
     }
 
-    public async execute(): Promise<string> {
+    constructor() {
+        this.folderName = 'product_images';
+        this.folderPath = path.join(process.cwd(), this.folderName);
+    }
+
+    public async executeAsync(): Promise<string> {
         let numOfImagesDeleted = 0;
         
         if (fs.existsSync(this.folderPath)) {
@@ -23,12 +26,8 @@ export class CleanCommand implements ICommand {
                 fs.unlinkSync(fileToBeDeleted);
                 numOfImagesDeleted += 1;            
             });
-        } 
-        else 
-            return `\x1b[32m${this.folderName}\x1b[0m folder wasn't found here. Nothing to delete.`
-
-        return `\x1b[32m${numOfImagesDeleted} images\x1b[0m deleted from ${this.folderPath}`
+            return `\x1b[32m${numOfImagesDeleted} images\x1b[0m deleted from ${this.folderPath}`;
+        }
+        return `\x1b[32m${this.folderName}\x1b[0m folder wasn't found here. Nothing to delete.`;
     }
-
-    
 }

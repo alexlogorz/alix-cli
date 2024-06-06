@@ -1,12 +1,17 @@
-export class HelpCommand implements ICommand {
-    public name: string;
+import { ICommand } from './../abstractions/ICommand';
+import packageJSON from './../../package.json';
 
-    constructor(name: string) {
-        this.name = name;
+export class HelpCommand implements ICommand
+{
+    public get name()
+    {
+        return 'help';
     }
    
-    public async execute(): Promise<string> {
-        return `
+    public async executeAsync(): Promise<string>
+    {
+        const version = packageJSON.version;
+        const helpPrompt = `
         \x1b[32m
             _____     ____       ___  ____  ___
            /  _  \\   |    |     |   | \\   \\/  /
@@ -15,7 +20,7 @@ export class HelpCommand implements ICommand {
          \\____|___ / |________| |___| /___/\\__\\
          \x1b[0m
           
-         version 1.0
+         version ${version}
             
          Alix (Ali extract) is a tool for getting product data from AliExpress. Developed by Alex Logorz.
             
@@ -27,7 +32,8 @@ export class HelpCommand implements ICommand {
             5. Type alix desc "your_product_url" to generate a product desc using ai.
             6. Type alix help for available commands and version info. 
             
-        `
+        `;
+        return Promise.resolve(helpPrompt);
     }
     
 }

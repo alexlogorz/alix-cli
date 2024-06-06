@@ -1,14 +1,15 @@
 import puppeteer, { Browser, Page } from "puppeteer";
+import { ICommand } from './../abstractions/ICommand';
 
 export class TitleCommand implements ICommand {
-    public name: string;
     public url?: string;
-    
-    constructor(name: string) { 
-        this.name = name;
+
+    public get name()
+    {
+        return 'title';
     }
 
-    public async execute(): Promise<string> {
+    public async executeAsync(): Promise<string> {
         const browser: Browser = await puppeteer.launch();
         const page: Page = await browser.newPage();
         
