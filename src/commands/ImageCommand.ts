@@ -1,20 +1,24 @@
-import puppeteer, { Browser, HTTPResponse, Page } from "puppeteer";
-import fs from 'fs'
-import path from 'path'
+import puppeteer, { Browser, Page } from "puppeteer";
+import fs from 'node:fs';
+import path from 'node:path';
+import { ICommand } from './../abstractions/ICommand';
 
 export class ImageCommand implements ICommand {
-    public name: string;
     public url?: string;
     private folderName: string;
     private folderPath: string;
 
-    constructor(name: string) {
-        this.name = name;
-        this.folderName = 'product_images'
-        this.folderPath = path.join(process.cwd(), this.folderName)
+    public get name()
+    {
+      return 'images';
     }
 
-    public async execute(): Promise<string> {
+    constructor() {
+        this.folderName = 'product_images';
+        this.folderPath = path.join(process.cwd(), this.folderName);
+    }
+
+    public async executeAsync(): Promise<string> {
         const browser: Browser = await puppeteer.launch();
         const page: Page = await browser.newPage();
         
@@ -49,6 +53,4 @@ export class ImageCommand implements ICommand {
 
         return `\x1b[32m${imageUrls.length} downloaded\x1b[0m into ${this.folderPath}`
     }
-
-
 }
