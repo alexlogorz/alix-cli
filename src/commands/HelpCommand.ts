@@ -24,7 +24,8 @@ export class HelpCommand implements ICommand {
             2. Type alix images "your_product_url" for product pictures. 
             3. Type alix set "your_api_key_value" to set your api key.
             4. Type alix clean to clear all images from folder.
-            5. Type alix help for available commands and version info. 
+            5. Type alix desc "your_product_url" to generate a product desc using ai.
+            6. Type alix help for available commands and version info. 
             
         `
     }

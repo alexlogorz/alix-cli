@@ -28,7 +28,7 @@ export class ImageCommand implements ICommand {
           const urls: string[] = [];
 
           images.forEach(img => {
-            const imgUrl: string | undefined = img.getAttribute('src')?.replace('_80x80', '')
+            const imgUrl = img.getAttribute('src')?.replace('_80x80', '')
             urls.push(imgUrl || "");
           });
 
@@ -39,7 +39,7 @@ export class ImageCommand implements ICommand {
           const imageUrl: string = imageUrls[i];
           const imageName: string = `image_${i}.jpg`;
           const imagePath: string = path.join(this.folderPath, imageName);
-          const imageStream: HTTPResponse | null = await page.goto(imageUrl);
+          const imageStream = await page.goto(imageUrl);
           
           if(imageStream)
             fs.writeFileSync(imagePath, await imageStream.buffer());

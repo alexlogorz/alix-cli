@@ -9,7 +9,6 @@ export class SetCommand implements ICommand {
     constructor(name: string) {
         this.name = name
         this.envFilePath = path.join(__dirname, '../../.env');
-        console.log(this.envFilePath)
     }
 
     public async execute(): Promise<string> {
