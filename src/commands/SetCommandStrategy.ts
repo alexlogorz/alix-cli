@@ -1,8 +1,8 @@
 import fs from 'node:fs'
 import path from 'node:path'
-import { ICommand } from './../abstractions/ICommand';
+import { ICommandStrategy } from '../abstractions/ICommandStrategy';
 
-export class SetCommand implements ICommand {
+export class SetCommandStrategy implements ICommandStrategy {
     public apiKey?: string;
     private envFilePath: string;
 

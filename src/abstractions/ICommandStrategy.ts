@@ -1,7 +1,5 @@
-export interface ICommand
+export interface ICommandStrategy
 {
     readonly name: string;
-    url?: string; 
-    apiKey?: string;
     executeAsync(): Promise<string>;
 }

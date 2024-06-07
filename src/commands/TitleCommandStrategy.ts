@@ -1,19 +1,19 @@
 import puppeteer, { Browser, Page } from "puppeteer";
-import { ICommand } from './../abstractions/ICommand';
+import { ICommandStrategy } from '../abstractions/ICommandStrategy';
 
-export class TitleCommand implements ICommand {
-    public url?: string;
+export class TitleCommandStrategy implements ICommandStrategy {
+    public name: string;
+    public param?: string;
 
-    public get name()
-    {
-        return 'title';
+    constructor() {
+        this.name = 'title'
     }
 
     public async executeAsync(): Promise<string> {
         const browser: Browser = await puppeteer.launch();
         const page: Page = await browser.newPage();
         
-        await page.goto(this.url || "");
+        await page.goto(this.param || '');
         
         const title: string = await page.evaluate(() => {
             const titleElement = document.querySelector('h1[data-pl="product-title"]');

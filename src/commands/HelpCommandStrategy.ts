@@ -1,7 +1,7 @@
-import { ICommand } from './../abstractions/ICommand';
-import packageJSON from './../../package.json';
+import { ICommandStrategy } from '../abstractions/ICommandStrategy';
+import packageJSON from '../../package.json';
 
-export class HelpCommand implements ICommand
+export class HelpCommandStrategy implements ICommandStrategy
 {
     public get name()
     {

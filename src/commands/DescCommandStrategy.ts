@@ -1,9 +1,9 @@
 import { GenerateContentResult, GenerativeModel, GoogleGenerativeAI } from "@google/generative-ai";
-import { TitleCommand } from './TitleCommand';
-import { ICommand } from './../abstractions/ICommand';
+import { TitleCommandStrategy } from './TitleCommandStrategy';
+import { ICommandStrategy } from '../abstractions/ICommandStrategy';
 
 
-export class DescCommand implements ICommand {
+export class DescCommandStrategy implements ICommandStrategy {
     public url?: string;
     private model: GenerativeModel;
 
@@ -19,7 +19,7 @@ export class DescCommand implements ICommand {
 
     public async executeAsync(): Promise<string> {
         // TODO: change logic so that we dont have to know this implementation detail!
-        const titleCommand: ICommand = new TitleCommand();
+        const titleCommand: ICommandStrategy = new TitleCommandStrategy();
         titleCommand.url = this.url
         let productDesc: string;
 

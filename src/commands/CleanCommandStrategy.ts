@@ -1,15 +1,13 @@
 import fs from 'node:fs';
 import path from 'node:path';
-import { ICommand } from './../abstractions/ICommand';
+import { ICommandStrategy } from '../abstractions/ICommandStrategy';
 
-export class CleanCommand implements ICommand {
+export class CleanCommandStrategy implements ICommandStrategy {
     private folderName: string;
     private folderPath: string;
-    public get name()
-    {
-        return 'clean';
-    }
+    public name: string = 'clean'
 
+   
     constructor() {
         this.folderName = 'product_images';
         this.folderPath = path.join(process.cwd(), this.folderName);

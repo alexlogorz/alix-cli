@@ -1,9 +1,9 @@
 import puppeteer, { Browser, Page } from "puppeteer";
 import fs from 'node:fs';
 import path from 'node:path';
-import { ICommand } from './../abstractions/ICommand';
+import { ICommandStrategy } from '../abstractions/ICommandStrategy';
 
-export class ImageCommand implements ICommand {
+export class ImageCommandStrategy implements ICommandStrategy {
     public url?: string;
     private folderName: string;
     private folderPath: string;
