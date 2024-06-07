@@ -4,16 +4,13 @@ import path from 'node:path';
 import { ICommandStrategy } from '../abstractions/ICommandStrategy';
 
 export class ImageCommandStrategy implements ICommandStrategy {
-    public url?: string;
+    public param?: string;
+    public name: string;
     private folderName: string;
     private folderPath: string;
 
-    public get name()
-    {
-      return 'images';
-    }
-
     constructor() {
+        this.name = 'images';
         this.folderName = 'product_images';
         this.folderPath = path.join(process.cwd(), this.folderName);
     }
@@ -22,7 +19,7 @@ export class ImageCommandStrategy implements ICommandStrategy {
         const browser: Browser = await puppeteer.launch();
         const page: Page = await browser.newPage();
         
-        await page.goto(this.url || "");
+        await page.goto(this.param || "");
       
         if (!fs.existsSync(this.folderPath)) 
           fs.mkdirSync(this.folderPath);

@@ -4,30 +4,32 @@ import { ICommandStrategy } from '../abstractions/ICommandStrategy';
 
 
 export class DescCommandStrategy implements ICommandStrategy {
-    public url?: string;
+    public param?: string;
     private model: GenerativeModel;
-
-    public get name()
-    {
-        return 'desc';
-    }
+    public name: string;
+  
 
     constructor() {
         const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY || "")
+       
         this.model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" })
+        this.name = 'desc'
     }
 
     public async executeAsync(): Promise<string> {
         // TODO: change logic so that we dont have to know this implementation detail!
-        const titleCommand: ICommandStrategy = new TitleCommandStrategy();
-        titleCommand.url = this.url
+        const titleCommand = new TitleCommandStrategy();
         let productDesc: string;
+
+        titleCommand.param = this.param
+        
 
         try {
             const title = await titleCommand.executeAsync()
-            const prompt: string = `${title}. Please write a nice product description based off the title. This is for facebook marketplace.`
+            const prompt: string = `${title}. Write a nice product description based off the title. This is for facebook marketplace.`
             const result: GenerateContentResult = await this.model.generateContent(prompt);
             const response = await result.response;
+
             productDesc = response.text();
     
         } 

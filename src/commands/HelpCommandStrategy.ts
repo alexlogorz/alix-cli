@@ -3,9 +3,10 @@ import packageJSON from '../../package.json';
 
 export class HelpCommandStrategy implements ICommandStrategy
 {
-    public get name()
-    {
-        return 'help';
+    public name: string;
+
+    constructor() {
+        this.name = 'help'
     }
    
     public async executeAsync(): Promise<string>

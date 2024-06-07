@@ -1,26 +1,43 @@
 import { ICommandStrategy } from './abstractions/ICommandStrategy';
-import { CommandNotFoundException } from './abstractions/CommandNotFoundException';
+import { InvalidCommandException } from './abstractions/InvalidCommandException';
+import { ArgumentNotFoundException } from './abstractions/ArgumentNotFoundException';
+import { ParamNotFoundException } from './abstractions/ParamNotFoundException';
 
 export class CLI {
 
-    private commandName?: string;
-    private commandParam?: string;
     private commandStrategy?: ICommandStrategy;
-
+    
     constructor(private readonly commands: Array<ICommandStrategy>) {
         const args = process.argv.slice(2);
-        // TODO: Check to see if valid command
-        
+        const [ commandName, commandParam ] = args
+
+        try {
+            if(args.length == 0) 
+                throw new ArgumentNotFoundException("No arguments were given. Type alix help for more info.")
+            
+            const command = this.commands.find(command => command.name === commandName)
+
+            if(!command)
+                throw new InvalidCommandException("Invalid command. Type alix help for more info.")
+            
+            this.setCommandStrategy(command)
+
+            if(this.commandStrategy?.hasOwnProperty('param') && !commandParam)
+                throw new ParamNotFoundException("No command parameter was given. Type alix help for more info.")
+            
+        } 
+        catch (error: any) {
+            console.error(error.errorCode, error.message)
+            process.exit(0)
+        }
     }
 
-    public setCommandStrategy(cmdName: string): void {
-        
+    public setCommandStrategy(command: ICommandStrategy): void {
+        this.commandStrategy = command
     }
 
     public async invokeCommand(): Promise<void>
     {
-        
-
         const output = await this.commandStrategy!.executeAsync();
         console.log(output);
     }

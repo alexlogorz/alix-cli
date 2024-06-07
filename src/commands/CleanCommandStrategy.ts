@@ -5,12 +5,13 @@ import { ICommandStrategy } from '../abstractions/ICommandStrategy';
 export class CleanCommandStrategy implements ICommandStrategy {
     private folderName: string;
     private folderPath: string;
-    public name: string = 'clean'
+    public name: string;
 
    
     constructor() {
         this.folderName = 'product_images';
         this.folderPath = path.join(process.cwd(), this.folderName);
+        this.name = 'clean'
     }
 
     public async executeAsync(): Promise<string> {
