@@ -11,7 +11,6 @@ export class DescFunction implements IFunction {
 
     constructor() {
         const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY || "")
-       
         this.model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" })
         this.name = 'desc'
     }
@@ -25,9 +24,8 @@ export class DescFunction implements IFunction {
         const titleCommand = new TitleFunction();
         let productDesc: string;
 
-        titleCommand.param = this.param
+        titleCommand.setParam(this.param || "")
         
-
         try {
             const title = await titleCommand.executeAsync()
             const prompt: string = `${title}. Write a nice product description based off the title. This is for facebook marketplace.`

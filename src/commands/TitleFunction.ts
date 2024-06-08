@@ -3,7 +3,7 @@ import { IFunction } from '../models/IFunction';
 
 export class TitleFunction implements IFunction {
     public name: string;
-    public param?: string;
+    private param?: string;
 
     constructor() {
         this.name = 'title'

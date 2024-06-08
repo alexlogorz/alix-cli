@@ -3,7 +3,7 @@ import path from 'node:path'
 import { IFunction } from '../models/IFunction';
 
 export class SetFunction implements IFunction {
-    public param?: string;
+    private param?: string;
     public name: string;
     private envFilePath: string;
 

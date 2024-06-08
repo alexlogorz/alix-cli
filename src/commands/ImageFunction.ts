@@ -4,7 +4,7 @@ import path from 'node:path';
 import { IFunction } from '../models/IFunction';
 
 export class ImageFunction implements IFunction {
-    public param?: string;
+    private param?: string;
     public name: string;
     private folderName: string;
     private folderPath: string;

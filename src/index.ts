@@ -7,11 +7,13 @@ import { CleanFunction } from "./commands/CleanFunction";
 import { ImageFunction } from "./commands/ImageFunction";
 import { SetFunction } from "./commands/SetFunction";
 import { DescFunction } from "./commands/DescFunction";
+import path from 'node:path'
 
-// TODO: change this so that we can work with typescript
-require('dotenv').config();
+const envFilePath = path.join(__dirname, '../.env');
 
-// commands we are supporting
+require('dotenv').config({ path: envFilePath });
+
+// CLI functions we are supporting
 const cliFunctions = [ 
     new TitleFunction(), 
     new HelpFunction(),
