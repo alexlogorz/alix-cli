@@ -1,7 +1,7 @@
 import puppeteer, { Browser, Page } from "puppeteer";
-import { ICommandStrategy } from '../abstractions/ICommandStrategy';
+import { IFunction } from '../abstractions/IFunction';
 
-export class TitleCommandStrategy implements ICommandStrategy {
+export class TitleFunction implements IFunction {
     public name: string;
     public param?: string;
 

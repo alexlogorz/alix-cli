@@ -1,8 +1,8 @@
 import fs from 'node:fs';
 import path from 'node:path';
-import { ICommandStrategy } from '../abstractions/ICommandStrategy';
+import { IFunction } from '../abstractions/IFunction';
 
-export class CleanCommandStrategy implements ICommandStrategy {
+export class CleanFunction implements IFunction {
     private folderName: string;
     private folderPath: string;
     public name: string;

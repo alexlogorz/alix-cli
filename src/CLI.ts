@@ -1,13 +1,13 @@
-import { ICommandStrategy } from './abstractions/ICommandStrategy';
+import { IFunction } from './abstractions/IFunction';
 import { InvalidCommandException } from './abstractions/InvalidCommandException';
 import { ArgumentNotFoundException } from './abstractions/ArgumentNotFoundException';
 import { ParamNotFoundException } from './abstractions/ParamNotFoundException';
 
 export class CLI {
 
-    private commandStrategy?: ICommandStrategy;
+    private commandStrategy?: IFunction;
     
-    constructor(private readonly commands: Array<ICommandStrategy>) {
+    constructor(private readonly commands: Array<IFunction>) {
         const args = process.argv.slice(2);
         const [ commandName, commandParam ] = args
 
@@ -20,7 +20,7 @@ export class CLI {
             if(!command)
                 throw new InvalidCommandException("Invalid command. Type alix help for more info.")
             
-            this.setCommandStrategy(command)
+            this.SetFunction(command)
 
             if(this.commandStrategy?.hasOwnProperty('param') && !commandParam)
                 throw new ParamNotFoundException("No command parameter was given. Type alix help for more info.")
@@ -32,7 +32,7 @@ export class CLI {
         }
     }
 
-    public setCommandStrategy(command: ICommandStrategy): void {
+    public SetFunction(command: IFunction): void {
         this.commandStrategy = command
     }
 
