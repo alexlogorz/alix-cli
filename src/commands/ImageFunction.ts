@@ -1,7 +1,7 @@
 import puppeteer, { Browser, Page } from "puppeteer";
 import fs from 'node:fs';
 import path from 'node:path';
-import { IFunction } from '../abstractions/IFunction';
+import { IFunction } from '../models/IFunction';
 
 export class ImageFunction implements IFunction {
     public param?: string;
@@ -13,6 +13,10 @@ export class ImageFunction implements IFunction {
         this.name = 'images';
         this.folderName = 'product_images';
         this.folderPath = path.join(process.cwd(), this.folderName);
+    }
+
+    public setParam(value: string): void {
+      this.param = value
     }
 
     public async executeAsync(): Promise<string> {

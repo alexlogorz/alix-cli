@@ -1,6 +1,6 @@
 import { GenerateContentResult, GenerativeModel, GoogleGenerativeAI } from "@google/generative-ai";
 import { TitleFunction } from './TitleFunction';
-import { IFunction } from '../abstractions/IFunction';
+import { IFunction } from '../models/IFunction';
 
 
 export class DescFunction implements IFunction {
@@ -14,6 +14,10 @@ export class DescFunction implements IFunction {
        
         this.model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" })
         this.name = 'desc'
+    }
+
+    public setParam(value: string): void {
+        this.param = value
     }
 
     public async executeAsync(): Promise<string> {

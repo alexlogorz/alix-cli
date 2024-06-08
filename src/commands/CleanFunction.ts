@@ -1,6 +1,6 @@
 import fs from 'node:fs';
 import path from 'node:path';
-import { IFunction } from '../abstractions/IFunction';
+import { IFunction } from '../models/IFunction';
 
 export class CleanFunction implements IFunction {
     private folderName: string;
@@ -12,6 +12,10 @@ export class CleanFunction implements IFunction {
         this.folderName = 'product_images';
         this.folderPath = path.join(process.cwd(), this.folderName);
         this.name = 'clean'
+    }
+
+    public setParam(value: string): void | null {
+        return null;
     }
 
     public async executeAsync(): Promise<string> {

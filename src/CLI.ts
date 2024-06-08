@@ -1,29 +1,31 @@
-import { IFunction } from './abstractions/IFunction';
-import { InvalidCommandException } from './abstractions/InvalidCommandException';
-import { ArgumentNotFoundException } from './abstractions/ArgumentNotFoundException';
-import { ParamNotFoundException } from './abstractions/ParamNotFoundException';
+import { IFunction } from './models/IFunction';
+import { InvalidCommandException } from './models/InvalidCommandException';
+import { ArgumentNotFoundException } from './models/ArgumentNotFoundException';
+import { ParamNotFoundException } from './models/ParamNotFoundException';
 
 export class CLI {
 
-    private commandStrategy?: IFunction;
+    private functionStrategy?: IFunction;
     
-    constructor(private readonly commands: Array<IFunction>) {
+    constructor(private readonly cliFunctions: Array<IFunction>) {
         const args = process.argv.slice(2);
-        const [ commandName, commandParam ] = args
+        const [ functionName, functionParam ] = args
 
         try {
             if(args.length == 0) 
                 throw new ArgumentNotFoundException("No arguments were given. Type alix help for more info.")
             
-            const command = this.commands.find(command => command.name === commandName)
+            const cliFunction = this.cliFunctions.find(cliFunction => cliFunction.name === functionName)
 
-            if(!command)
+            if(!cliFunction)
                 throw new InvalidCommandException("Invalid command. Type alix help for more info.")
-            
-            this.SetFunction(command)
 
-            if(this.commandStrategy?.hasOwnProperty('param') && !commandParam)
+            if(cliFunction.hasOwnProperty('param') && !functionParam)
                 throw new ParamNotFoundException("No command parameter was given. Type alix help for more info.")
+
+            cliFunction.setParam(functionParam)
+
+            this.SetFunction(cliFunction)
             
         } 
         catch (error: any) {
@@ -32,13 +34,13 @@ export class CLI {
         }
     }
 
-    public SetFunction(command: IFunction): void {
-        this.commandStrategy = command
+    public SetFunction(cliFunction: IFunction): void {
+        this.functionStrategy = cliFunction
     }
 
     public async invokeCommand(): Promise<void>
     {
-        const output = await this.commandStrategy!.executeAsync();
+        const output = await this.functionStrategy!.executeAsync();
         console.log(output);
     }
 

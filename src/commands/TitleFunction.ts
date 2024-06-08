@@ -1,5 +1,5 @@
 import puppeteer, { Browser, Page } from "puppeteer";
-import { IFunction } from '../abstractions/IFunction';
+import { IFunction } from '../models/IFunction';
 
 export class TitleFunction implements IFunction {
     public name: string;
@@ -7,6 +7,10 @@ export class TitleFunction implements IFunction {
 
     constructor() {
         this.name = 'title'
+    }
+
+    public setParam(value: string): void {
+        this.param = value
     }
 
     public async executeAsync(): Promise<string> {

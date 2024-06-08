@@ -12,7 +12,7 @@ import { DescFunction } from "./commands/DescFunction";
 require('dotenv').config();
 
 // commands we are supporting
-const commands = [ 
+const cliFunctions = [ 
     new TitleFunction(), 
     new HelpFunction(),
     new CleanFunction(),
@@ -21,6 +21,6 @@ const commands = [
     new DescFunction(),
 ];
 
-const alix = new CLI(commands);
+const alix = new CLI(cliFunctions);
 
 alix.invokeCommand();
