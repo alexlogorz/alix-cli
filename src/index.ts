@@ -10,6 +10,7 @@ import { DescFunction } from "./commands/DescFunction";
 import path from 'path'
 
 const envFilePath = path.join(__dirname, '../.env');
+
 require('dotenv').config({ path: envFilePath });
 
 // CLI functions we are supporting
@@ -24,4 +25,4 @@ const cliFunctions = [
 
 const alix = new CLI(cliFunctions);
 
-alix.invokeCommand();
+alix.executeCLIFunction();

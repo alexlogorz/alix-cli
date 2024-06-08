@@ -38,6 +38,7 @@ export class HelpFunction implements IFunction
             6. Type alix help for available commands and version info. 
             
         `;
+        
         return Promise.resolve(helpPrompt);
     }
     

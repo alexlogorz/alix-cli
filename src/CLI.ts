@@ -25,7 +25,7 @@ export class CLI {
 
             cliFunction.setParam(functionParam)
 
-            this.SetFunction(cliFunction)
+            this.setFunction(cliFunction)
             
         } 
         catch (error: any) {
@@ -34,14 +34,20 @@ export class CLI {
         }
     }
 
-    public SetFunction(cliFunction: IFunction): void {
+    public setFunction(cliFunction: IFunction): void {
         this.functionStrategy = cliFunction
     }
 
-    public async invokeCommand(): Promise<void>
+    public async executeCLIFunction(): Promise<void>
     {
-        const output = await this.functionStrategy!.executeAsync();
-        console.log(output);
+        try {
+            const output = await this.functionStrategy!.executeAsync();
+            console.log(output);
+        }
+        catch(error: any) {
+            console.error(error.errorCode, error.message)
+            process.exit(0)
+        }
     }
 
 }
