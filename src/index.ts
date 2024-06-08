@@ -7,10 +7,9 @@ import { CleanFunction } from "./commands/CleanFunction";
 import { ImageFunction } from "./commands/ImageFunction";
 import { SetFunction } from "./commands/SetFunction";
 import { DescFunction } from "./commands/DescFunction";
-import path from 'node:path'
+import path from 'path'
 
 const envFilePath = path.join(__dirname, '../.env');
-
 require('dotenv').config({ path: envFilePath });
 
 // CLI functions we are supporting
