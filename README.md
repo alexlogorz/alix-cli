@@ -74,7 +74,7 @@ alix clean
 
 ## Quick Installation
 | Windows      | MacOS    |
-| ------------- | ----------- |
+| :------------ | :------------ |
 | [AlixCLI-Win-Installer-V1.0.bat](https://raw.githubusercontent.com/alexlogorz/alix-cli/main/AlixCLI-Win-Installer-V1.0.bat) | Coming soon |
 
 ## Support
