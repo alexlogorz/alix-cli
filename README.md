@@ -73,11 +73,9 @@ alix clean
 2. This tool has only been tested on https://aliexpress.us
 
 ## Quick Installation
-**Windows Installer**<br>
-[AlixCLI-Win-Installer-V1.0.bat](https://raw.githubusercontent.com/alexlogorz/alix-cli/main/AlixCLI-Win-Installer-V1.0.bat)
-
-**MacOS Installer**<br>
-Coming soon
+| Windows      | MacOS    |
+| ------------- | ----------- |
+| [AlixCLI-Win-Installer-V1.0.bat](https://raw.githubusercontent.com/alexlogorz/alix-cli/main/AlixCLI-Win-Installer-V1.0.bat) | Coming soon |
 
 ## Support
 If you need assistance regarding this tool, please reach me at alogorzmedia@gmail.com
