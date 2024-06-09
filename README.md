@@ -8,6 +8,8 @@ Alix is a CLI tool that extracts product data and images from AliExpress. Moreov
 - [Installation](#installation)
 - [Usage](#usage)
 - [Support](#support)
+- [Windows Installer](#windows-installer)
+- [Mac Installer](#mac-installer)
 
 ## Gemini AI
 This tool uses Google's Gemini AI which requires an api key. It can craft AliExpress product descriptions based on the product titles, leveraging advanced language understanding to enhance visibility, sales and save you time.
@@ -69,7 +71,11 @@ alix clean
 
 **Important**
 1. Your api key and product links must be enclosed in double quotation marks.
-2. This tool has only been tested on https://aliexpress.us 
+2. This tool has only been tested on https://aliexpress.us
+
+## Windows Installer
+
+## Mac Installer
 
 ## Support
 If you need assistance regarding this tool, please reach me at alogorzmedia@gmail.com
