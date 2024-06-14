@@ -19,9 +19,8 @@ export class CLI {
             
             const cliFunction = this.cliFunctions.find(cliFunction => cliFunction.name === functionName);
 
-            if(!cliFunction) {
+            if(!cliFunction) 
                 throw new InvalidCommandException("Invalid command. Type alix help for more info.");
-            }
 
             if(cliFunction.hasOwnProperty('param') && !functionParam) {
                 throw new ParamNotFoundException("No command parameter was given. Type alix help for more info.");
