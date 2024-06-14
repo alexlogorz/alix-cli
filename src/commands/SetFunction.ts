@@ -1,6 +1,6 @@
 import fs from 'node:fs'
 import path from 'node:path'
-import { IFunction } from '../models/IFunction';
+import { IFunction } from './../models/IFunction';
 
 export class SetFunction implements IFunction {
     private param?: string;
@@ -9,7 +9,7 @@ export class SetFunction implements IFunction {
 
     constructor() {
         this.name = 'set'
-        this.envFilePath = path.join(__dirname, '../../.env');
+        this.envFilePath = path.join(__dirname, './../../.env');
     }
 
     public setParam(value: string): void {

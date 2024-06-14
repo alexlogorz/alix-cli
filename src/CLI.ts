@@ -9,33 +9,36 @@ export class CLI {
     
     constructor(private readonly cliFunctions: Array<IFunction>) {
         const args = process.argv.slice(2);
-        const [ functionName, functionParam ] = args
+        const [ functionName, functionParam ] = args;
 
         try {
-            if(args.length == 0) 
-                throw new ArgumentNotFoundException("No arguments were given. Type alix help for more info.")
+            if(args.length == 0) {
+                throw new ArgumentNotFoundException("No arguments were given. Type alix help for more info.");
+            }
             
-            const cliFunction = this.cliFunctions.find(cliFunction => cliFunction.name === functionName)
+            const cliFunction = this.cliFunctions.find(cliFunction => cliFunction.name === functionName);
 
-            if(!cliFunction)
-                throw new InvalidCommandException("Invalid command. Type alix help for more info.")
+            if(!cliFunction) {
+                throw new InvalidCommandException("Invalid command. Type alix help for more info.");
+            }
 
-            if(cliFunction.hasOwnProperty('param') && !functionParam)
-                throw new ParamNotFoundException("No command parameter was given. Type alix help for more info.")
+            if(cliFunction.hasOwnProperty('param') && !functionParam) {
+                throw new ParamNotFoundException("No command parameter was given. Type alix help for more info.");
+            }
 
-            cliFunction.setParam(functionParam)
+            cliFunction.setParam(functionParam);
 
-            this.setFunction(cliFunction)
+            this.setFunction(cliFunction);
             
         } 
         catch (error: any) {
-            console.error(error.errorCode, error.message)
-            process.exit(0)
+            console.error(error.errorCode, error.message);
+            process.exit(0);
         }
     }
 
     public setFunction(cliFunction: IFunction): void {
-        this.functionStrategy = cliFunction
+        this.functionStrategy = cliFunction;
     }
 
     public async executeCLIFunction(): Promise<void>
@@ -45,8 +48,8 @@ export class CLI {
             console.log(output);
         }
         catch(error: any) {
-            console.error(error.errorCode, error.message)
-            process.exit(0)
+            console.error(error.errorCode, error.message);
+            process.exit(0);
         }
     }
 

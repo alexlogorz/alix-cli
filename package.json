@@ -5,6 +5,7 @@
   "main": "dist/index.js",
   "scripts": {
     "test": "jest",
+    "test:watch": "jest --watch --coverage",
     "build": "tsc",
     "dev:help": "ts-node ./src/index.ts help"
   },

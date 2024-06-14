@@ -1,8 +1,8 @@
 import puppeteer, { Browser, Page } from "puppeteer";
 import fs from 'node:fs';
 import path from 'node:path';
-import { IFunction } from '../models/IFunction';
-import { ExecuteFunctionException } from "../models/ExecuteFunctionException";
+import { IFunction } from './../models/IFunction';
+import { ExecuteFunctionException } from "./../models/ExecuteFunctionException";
 
 export class ImageFunction implements IFunction {
     private param?: string;
