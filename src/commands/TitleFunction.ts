@@ -1,9 +1,11 @@
 import puppeteer, { Browser, Page } from "puppeteer";
 import { IFunction } from '../models/IFunction';
 import { ExecuteFunctionException } from "../models/ExecuteFunctionException";
+import { ParamNotFoundException } from "../models/ParamNotFoundException";
 
 export class TitleFunction implements IFunction {
     public name: string;
+    
     private param?: string;
 
     constructor() {
@@ -11,6 +13,9 @@ export class TitleFunction implements IFunction {
     }
 
     public setParam(value: string): void {
+        if(value === undefined)
+            throw new ParamNotFoundException("This function requires a parameter.")
+
         this.param = value
     }
 

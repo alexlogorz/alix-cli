@@ -9,8 +9,8 @@ export class HelpFunction implements IFunction
         this.name = 'help'
     }
     
-    public setParam(value: string): void | null {
-        return null;
+    public setParam(value: string): void {
+        return undefined
     }
    
     public async executeAsync(): Promise<string>

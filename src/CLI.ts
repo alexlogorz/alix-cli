@@ -1,7 +1,6 @@
 import { IFunction } from './models/IFunction';
 import { InvalidCommandException } from './models/InvalidCommandException';
-import { ArgumentNotFoundException } from './models/ArgumentNotFoundException';
-import { ParamNotFoundException } from './models/ParamNotFoundException';
+import { NoUserInputException } from './models/NoUserInputException';
 
 export class CLI {
 
@@ -13,19 +12,16 @@ export class CLI {
 
         try {
             if(args.length == 0) 
-                throw new ArgumentNotFoundException("No arguments were given. Type alix help for more info.")
+                throw new NoUserInputException("No arguments were given. Type alix help for more info.")
             
             const cliFunction = this.cliFunctions.find(cliFunction => cliFunction.name === functionName)
 
             if(!cliFunction)
                 throw new InvalidCommandException("Invalid command. Type alix help for more info.")
 
-            if(cliFunction.hasOwnProperty('param') && !functionParam)
-                throw new ParamNotFoundException("No command parameter was given. Type alix help for more info.")
+            cliFunction.setParam(functionParam);
 
-            cliFunction.setParam(functionParam)
-
-            this.setFunction(cliFunction)
+            this.setFunctionStrategy(cliFunction)
             
         } 
         catch (error: any) {
@@ -34,7 +30,7 @@ export class CLI {
         }
     }
 
-    public setFunction(cliFunction: IFunction): void {
+    public setFunctionStrategy(cliFunction: IFunction): void {
         this.functionStrategy = cliFunction
     }
 
