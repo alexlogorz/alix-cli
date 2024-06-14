@@ -7,7 +7,7 @@ on:
     branches: [ "main" ]
 
 jobs:
-  use_nodejs_v22:
+  build_and_test:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v4
@@ -16,20 +16,9 @@ jobs:
       with:
         node-version: '22.x'
         cache: 'npm'
-  install_dependencies:
-    runs-on: ubuntu-latest
-    steps:
-    - name: Install dependencies
+    - name: Installing
       run: npm install --no-cache
-  build:
-    runs-on: ubuntu-latest
-    steps:
-    - name: Build project
+    - name: Building
       run: npm run build
-    - name: Test project
-      run: npm test
-  test:
-    runs-on: ubuntu-latest
-    steps:
-    - name: Test
+    - name: Testing
       run: npm test
