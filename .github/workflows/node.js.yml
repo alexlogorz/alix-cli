@@ -17,16 +17,19 @@ jobs:
         node-version: '22.x'
         cache: 'npm'
   install_dependencies:
+    runs-on: ubuntu-latest
     steps:
     - name: Install dependencies
       run: npm install --no-cache
   build:
+    runs-on: ubuntu-latest
     steps:
     - name: Build project
       run: npm run build
     - name: Test project
       run: npm test
   test:
+    runs-on: ubuntu-latest
     steps:
     - name: Test
       run: npm test
