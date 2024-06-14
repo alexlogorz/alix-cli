@@ -2,13 +2,13 @@ import { GenerateContentResult, GenerativeModel, GoogleGenerativeAI } from "@goo
 import { TitleFunction } from './TitleFunction';
 import { IFunction } from './../models/IFunction';
 import { ExecuteFunctionException } from "./../models/ExecuteFunctionException";
-
+import { ParamNotFoundException } from "../models/ParamNotFoundException";
 
 export class DescFunction implements IFunction {
     public param?: string;
-    private model: GenerativeModel;
     public name: string;
-  
+    
+    private model: GenerativeModel;
 
     constructor() {
         const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY || "")
@@ -17,6 +17,9 @@ export class DescFunction implements IFunction {
     }
 
     public setParam(value: string): void {
+        if(value === undefined)
+            throw new ParamNotFoundException("This function requires a parameter.")
+
         this.param = value
     }
 

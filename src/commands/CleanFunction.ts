@@ -6,6 +6,7 @@ import { ExecuteFunctionException } from './../models/ExecuteFunctionException';
 export class CleanFunction implements IFunction {
     private folderName: string;
     private folderPath: string;
+    
     public name: string;
 
    
@@ -15,8 +16,8 @@ export class CleanFunction implements IFunction {
         this.name = 'clean'
     }
 
-    public setParam(value: string): void | null {
-        return null;
+    public setParam(value: string): void {
+        return undefined;
     }
 
     public async executeAsync(): Promise<string> {

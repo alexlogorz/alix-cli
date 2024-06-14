@@ -1,11 +1,13 @@
 import fs from 'node:fs'
 import path from 'node:path'
 import { IFunction } from './../models/IFunction';
+import { ParamNotFoundException } from '../models/ParamNotFoundException';
 
 export class SetFunction implements IFunction {
-    private param?: string;
     public name: string;
+    
     private envFilePath: string;
+    private param?: string;
 
     constructor() {
         this.name = 'set'
@@ -13,6 +15,9 @@ export class SetFunction implements IFunction {
     }
 
     public setParam(value: string): void {
+        if(value === undefined)
+            throw new ParamNotFoundException("This function requires a parameter.")
+
         this.param = value
     }
 

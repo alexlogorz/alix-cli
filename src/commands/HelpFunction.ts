@@ -10,6 +10,7 @@ export class HelpFunction implements IFunction
     }
     
     public setParam(value: string): void {
+        return undefined
     }
    
     public async executeAsync(): Promise<string>
