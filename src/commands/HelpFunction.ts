@@ -1,5 +1,5 @@
-import { IFunction } from '../models/IFunction';
-import packageJSON from '../../package.json';
+import { IFunction } from './../models/IFunction';
+import packageJSON from './../../package.json';
 
 export class HelpFunction implements IFunction
 {

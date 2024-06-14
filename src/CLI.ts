@@ -8,16 +8,17 @@ export class CLI {
     
     constructor(private readonly cliFunctions: Array<IFunction>) {
         const args = process.argv.slice(2);
-        const [ functionName, functionParam ] = args
+        const [ functionName, functionParam ] = args;
 
         try {
+          
             if(args.length == 0) 
                 throw new NoUserInputException("No arguments were given. Type alix help for more info.")
             
-            const cliFunction = this.cliFunctions.find(cliFunction => cliFunction.name === functionName)
+            const cliFunction = this.cliFunctions.find(cliFunction => cliFunction.name === functionName);
 
-            if(!cliFunction)
-                throw new InvalidCommandException("Invalid command. Type alix help for more info.")
+            if(!cliFunction) 
+                throw new InvalidCommandException("Invalid command. Type alix help for more info.");
 
             cliFunction.setParam(functionParam);
 
@@ -25,10 +26,11 @@ export class CLI {
             
         } 
         catch (error: any) {
-            console.error(error.errorCode, error.message)
-            process.exit(0)
+            console.error(error.errorCode, error.message);
+            process.exit(0);
         }
     }
+
 
     public setFunctionStrategy(cliFunction: IFunction): void {
         this.functionStrategy = cliFunction
@@ -41,8 +43,8 @@ export class CLI {
             console.log(output);
         }
         catch(error: any) {
-            console.error(error.errorCode, error.message)
-            process.exit(0)
+            console.error(error.errorCode, error.message);
+            process.exit(0);
         }
     }
 

@@ -1,6 +1,6 @@
 import puppeteer, { Browser, Page } from "puppeteer";
-import { IFunction } from '../models/IFunction';
-import { ExecuteFunctionException } from "../models/ExecuteFunctionException";
+import { IFunction } from './../models/IFunction';
+import { ExecuteFunctionException } from './../models/ExecuteFunctionException';
 import { ParamNotFoundException } from "../models/ParamNotFoundException";
 
 export class TitleFunction implements IFunction {

@@ -1,7 +1,7 @@
 import fs from 'node:fs';
 import path from 'node:path';
-import { IFunction } from '../models/IFunction';
-import { ExecuteFunctionException } from '../models/ExecuteFunctionException';
+import { IFunction } from './../models/IFunction';
+import { ExecuteFunctionException } from './../models/ExecuteFunctionException';
 
 export class CleanFunction implements IFunction {
     private folderName: string;
