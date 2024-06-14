@@ -9,7 +9,7 @@ import { SetFunction } from "./commands/SetFunction";
 import { DescFunction } from "./commands/DescFunction";
 import path from 'path'
 
-const envFilePath = path.join(__dirname, '../.env');
+const envFilePath = path.join(__dirname, './../.env');
 
 require('dotenv').config({ path: envFilePath });
 

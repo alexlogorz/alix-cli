@@ -1,5 +1,5 @@
-import { IFunction } from '../models/IFunction';
-import packageJSON from '../../package.json';
+import { IFunction } from './../models/IFunction';
+import packageJSON from './../../package.json';
 
 export class HelpFunction implements IFunction
 {
@@ -10,7 +10,6 @@ export class HelpFunction implements IFunction
     }
     
     public setParam(value: string): void {
-        return undefined
     }
    
     public async executeAsync(): Promise<string>
