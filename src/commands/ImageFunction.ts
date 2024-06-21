@@ -3,7 +3,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 import { IFunction } from './../models/IFunction';
 import { ExecuteFunctionException } from "./../models/ExecuteFunctionException";
-import { ParamNotFoundException } from "../models/ParamNotFoundException";
+import { ParamNotFoundException } from "./../models/ParamNotFoundException";
 
 export class ImageFunction implements IFunction {
     public name: string;  
