@@ -1,4 +1,4 @@
-import fs from 'node:fs';
+import { existsSync, readdirSync, unlinkSync } from 'node:fs';
 import path from 'node:path';
 import { IFunction } from './../models/IFunction';
 import { ExecuteFunctionException } from './../models/ExecuteFunctionException';
@@ -6,7 +6,7 @@ import { ExecuteFunctionException } from './../models/ExecuteFunctionException';
 export class CleanFunction implements IFunction {
     private folderName: string;
     private folderPath: string;
-    
+    private deletedFileCount: number = 0;
     public name: string;
 
    
@@ -21,24 +21,21 @@ export class CleanFunction implements IFunction {
     }
 
     public async executeAsync(): Promise<string> {
-        let numOfImagesDeleted = 0;
-        
         try {
-            if (fs.existsSync(this.folderPath)) {
-                const files = fs.readdirSync(this.folderPath);
-                
+            if (existsSync(this.folderPath)) {
+                const files = readdirSync(this.folderPath);
                 files.forEach(file => {
                     const fileToBeDeleted = path.join(this.folderPath, file);
-                    fs.unlinkSync(fileToBeDeleted);
-                    numOfImagesDeleted += 1;            
+                    unlinkSync(fileToBeDeleted);
+                    this.deletedFileCount++;
                 });
-                return `\x1b[32m${numOfImagesDeleted} images\x1b[0m deleted from ${this.folderPath}`;
+                return `\x1b[32m${this.deletedFileCount} images\x1b[0m deleted from ${this.folderPath}`;
             }
             
             return `\x1b[32m${this.folderName}\x1b[0m folder wasn't found here. Nothing to delete.`;
         }
         catch(error: any) {
-            throw new ExecuteFunctionException(error.message)
+            throw new ExecuteFunctionException(error.message);
         }
     }
 }

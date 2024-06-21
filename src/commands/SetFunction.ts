@@ -1,7 +1,7 @@
 import fs from 'node:fs'
 import path from 'node:path'
 import { IFunction } from './../models/IFunction';
-import { ParamNotFoundException } from '../models/ParamNotFoundException';
+import { ParamNotFoundException } from './../models/ParamNotFoundException';
 
 export class SetFunction implements IFunction {
     public name: string;

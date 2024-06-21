@@ -2,7 +2,8 @@ import { GenerateContentResult, GenerativeModel, GoogleGenerativeAI } from "@goo
 import { TitleFunction } from './TitleFunction';
 import { IFunction } from './../models/IFunction';
 import { ExecuteFunctionException } from "./../models/ExecuteFunctionException";
-import { ParamNotFoundException } from "../models/ParamNotFoundException";
+import { ParamNotFoundException } from "./../models/ParamNotFoundException";
+
 
 export class DescFunction implements IFunction {
     public param?: string;

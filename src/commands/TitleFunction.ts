@@ -51,7 +51,4 @@ export class TitleFunction implements IFunction {
             throw new ExecuteFunctionException(error.message)
         }
     }
-
-    
-    
 }
