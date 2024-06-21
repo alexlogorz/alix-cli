@@ -35,7 +35,6 @@ export class DescFunction implements IFunction {
     public async executeAsync(): Promise<string> {
         try {
             const titleCommand = new TitleFunction();
-            let formattedTextResponse: string;
 
             titleCommand.setParam(this.param || "")
 
@@ -54,7 +53,7 @@ export class DescFunction implements IFunction {
             const parsedJson = JSON.parse(this.extractJsonFromString(response.text()))
             const formattedSellingPoints = parsedJson.selling_points.map((point: any) => `✔️ ${point}`).join('\n\n');
             
-            formattedTextResponse = `${parsedJson.description}\n\n${formattedSellingPoints}\n\n${parsedJson.conclusion}
+            const formattedTextResponse = `${parsedJson.description}\n\n${formattedSellingPoints}\n\n${parsedJson.conclusion}
             `
             return `\x1b[32mProduct description (Generative AI):\x1b[0m ${formattedTextResponse}`
         } 
