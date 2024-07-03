@@ -1,4 +1,3 @@
-
 export interface ICLIFunction
 {
     readonly name: string;

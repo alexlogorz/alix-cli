@@ -9,13 +9,11 @@ export class TitleFunction implements ICLIFunction {
     
     private param: string;
     private model: GenerativeModel;
-    private options: string[]
 
     constructor() {
         const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY || "")
         this.name = 'title'
         this.param = ''
-        this.options = []
         this.model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" })
     }
 
