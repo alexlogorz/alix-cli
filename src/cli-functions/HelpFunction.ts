@@ -1,14 +1,21 @@
-import { IFunction } from './../models/IFunction';
+import { ICLIFunction } from '../models/ICLIFunction';
 import packageJSON from './../../package.json';
 
-export class HelpFunction implements IFunction
+export class HelpFunction implements ICLIFunction
 {
     public name: string;
 
     constructor() {
         this.name = 'help'
     }
+
+
+    // This ClI function doesnt require any options.
+    public setOptions(options: string[]): void {
+        return undefined
+    }
     
+    // This CLI function doesnt require a param.
     public setParam(value: string): void {
         return undefined
     }

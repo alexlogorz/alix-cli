@@ -1,21 +1,27 @@
 import puppeteer, { Browser, Page } from "puppeteer";
 import fs from 'node:fs';
 import path from 'node:path';
-import { IFunction } from './../models/IFunction';
+import { ICLIFunction } from '../models/ICLIFunction';
 import { ExecuteFunctionException } from "./../models/ExecuteFunctionException";
 import { ParamNotFoundException } from "../models/ParamNotFoundException";
 
-export class ImageFunction implements IFunction {
+export class ImageFunction implements ICLIFunction {
     public name: string;  
     
-    private param?: string;
+    private param: string;
     private folderName: string;
     private folderPath: string;
 
     constructor() {
         this.name = 'images';
+        this.param = ''
         this.folderName = 'product_images';
         this.folderPath = path.join(process.cwd(), this.folderName);
+    }
+
+    // This CLI function doesnt require any options.
+    public setOptions(options: string[]): void {
+      return undefined
     }
 
     public setParam(value: string): void {
@@ -30,7 +36,7 @@ export class ImageFunction implements IFunction {
             const browser: Browser = await puppeteer.launch();
             const page: Page = await browser.newPage();
             
-            await page.goto(this.param || "");
+            await page.goto(this.param);
           
             if (!fs.existsSync(this.folderPath)) 
               fs.mkdirSync(this.folderPath);

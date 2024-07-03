@@ -1,21 +1,26 @@
 import fs from 'node:fs';
 import path from 'node:path';
-import { IFunction } from './../models/IFunction';
+import { ICLIFunction } from '../models/ICLIFunction';
 import { ExecuteFunctionException } from './../models/ExecuteFunctionException';
 
-export class CleanFunction implements IFunction {
+export class CleanFunction implements ICLIFunction {
     private folderName: string;
     private folderPath: string;
     
     public name: string;
 
-   
     constructor() {
         this.folderName = 'product_images';
         this.folderPath = path.join(process.cwd(), this.folderName);
         this.name = 'clean'
     }
 
+    // This CLI function doesnt require any options.
+    public setOptions(options: string[]): void {
+        return undefined
+    }
+
+    // This CLI function doesnt require a param.
     public setParam(value: string): void {
         return undefined;
     }

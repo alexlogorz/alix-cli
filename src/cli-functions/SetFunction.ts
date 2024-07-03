@@ -1,17 +1,23 @@
 import fs from 'node:fs'
 import path from 'node:path'
-import { IFunction } from './../models/IFunction';
+import { ICLIFunction } from '../models/ICLIFunction';
 import { ParamNotFoundException } from '../models/ParamNotFoundException';
 
-export class SetFunction implements IFunction {
+export class SetFunction implements ICLIFunction {
     public name: string;
     
     private envFilePath: string;
-    private param?: string;
+    private param: string;
 
     constructor() {
         this.name = 'set'
+        this.param = ''
         this.envFilePath = path.join(__dirname, './../../.env');
+    }
+
+    // This CLI function doesnt require any options.
+    public setOptions(options: string[]): void {
+        return undefined
     }
 
     public setParam(value: string): void {

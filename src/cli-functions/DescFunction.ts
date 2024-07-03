@@ -1,11 +1,11 @@
 import { GenerateContentResult, GenerativeModel, GoogleGenerativeAI } from "@google/generative-ai";
 import { TitleFunction } from './TitleFunction';
-import { IFunction } from './../models/IFunction';
+import { ICLIFunction } from '../models/ICLIFunction';
 import { ExecuteFunctionException } from "./../models/ExecuteFunctionException";
 import { ParamNotFoundException } from "../models/ParamNotFoundException";
 
-export class DescFunction implements IFunction {
-    public param?: string;
+export class DescFunction implements ICLIFunction {
+    public param: string;
     public name: string;
     
     private model: GenerativeModel;
@@ -14,6 +14,12 @@ export class DescFunction implements IFunction {
         const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY || "")
         this.model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" })
         this.name = 'desc'
+        this.param = ''
+    }
+
+    // This ClI function doesnt require any options.
+    public setOptions(options: string[]): void {
+        return undefined
     }
 
     public setParam(value: string): void {
@@ -35,7 +41,7 @@ export class DescFunction implements IFunction {
         try {
             const titleCommand = new TitleFunction();
 
-            titleCommand.setParam(this.param || "")
+            titleCommand.setParam(this.param)
 
             const title = await titleCommand.executeAsync()
             const prompt: string = `

@@ -1,14 +1,14 @@
-import { IFunction } from './models/IFunction';
-import { InvalidCommandException } from './models/InvalidCommandException';
+import { ICLIFunction } from './models/ICLIFunction';
+import { InvalidFunctionException } from './models/InvalidFunctionException';
 import { NoUserInputException } from './models/NoUserInputException';
 
 export class CLI {
 
-    private functionStrategy?: IFunction;
+    private cliFunction?: ICLIFunction;
     
-    constructor(private readonly cliFunctions: Array<IFunction>) {
+    constructor(private readonly cliFunctions: Array<ICLIFunction>) {
         const args = process.argv.slice(2);
-        const [ functionName, functionParam ] = args;
+        const [ functionName ] = args;
 
         try {
           
@@ -18,11 +18,10 @@ export class CLI {
             const cliFunction = this.cliFunctions.find(cliFunction => cliFunction.name === functionName);
 
             if(!cliFunction) 
-                throw new InvalidCommandException("Invalid command. Type alix help for more info.");
+                throw new InvalidFunctionException("Invalid cli function. Type alix help for more info.");
 
-            cliFunction.setParam(functionParam);
+            this.cliFunction = cliFunction;
 
-            this.setFunctionStrategy(cliFunction)
             
         } 
         catch (error: any) {
@@ -32,14 +31,15 @@ export class CLI {
     }
 
 
-    public setFunctionStrategy(cliFunction: IFunction): void {
-        this.functionStrategy = cliFunction
+    // TODO: Returns an array of args
+    public parseArgs(): string[] {
+        return []
     }
 
     public async executeCLIFunction(): Promise<void>
     {
         try {
-            const output = await this.functionStrategy!.executeAsync();
+            const output = await this.cliFunction!.executeAsync();
             console.log(output);
         }
         catch(error: any) {

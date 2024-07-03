@@ -1,19 +1,27 @@
 import puppeteer, { Browser, Page } from "puppeteer";
-import { IFunction } from './../models/IFunction';
+import { ICLIFunction } from '../models/ICLIFunction';
 import { ExecuteFunctionException } from './../models/ExecuteFunctionException';
-import { ParamNotFoundException } from "../models/ParamNotFoundException";
 import { GenerateContentResult, GenerativeModel, GoogleGenerativeAI } from "@google/generative-ai";
+import { ParamNotFoundException } from "../models/ParamNotFoundException";
 
-export class TitleFunction implements IFunction {
+export class TitleFunction implements ICLIFunction {
     public name: string;
     
-    private param?: string;
+    private param: string;
     private model: GenerativeModel;
+    private options: string[]
 
     constructor() {
         const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY || "")
         this.name = 'title'
+        this.param = ''
+        this.options = []
         this.model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" })
+    }
+
+    // This CLI function doesnt require any options.
+    public setOptions(options: string[]): void {
+        return undefined
     }
 
     public setParam(value: string): void {
@@ -28,7 +36,7 @@ export class TitleFunction implements IFunction {
             const browser: Browser = await puppeteer.launch();
             const page: Page = await browser.newPage();
             
-            await page.goto(this.param || '');
+            await page.goto(this.param);
             
             const title: string = await page.evaluate(() => {
                 const titleElement = document.querySelector('h1[data-pl="product-title"]');
