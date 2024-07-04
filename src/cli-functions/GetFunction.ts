@@ -4,6 +4,7 @@ import { ICLIFunction } from '../models/ICLIFunction';
 import { ParamNotFoundException } from '../models/ParamNotFoundException';
 import { InvalidOptionException } from '../models/InvalidOptionException';
 import { IOption } from '../models/IOptions';
+import { FunctionService } from '../services/FunctionService';
 
 export class GetFunction implements ICLIFunction {
     public name: string;
@@ -12,7 +13,7 @@ export class GetFunction implements ICLIFunction {
     private param: string;
     private options: IOption[];
 
-    constructor(private readonly validOptions: Array<IOption>) {
+    constructor(private readonly validOptions: Array<IOption>, private readonly functionService?: FunctionService) {
         this.name = 'get'
         this.param = ''
         this.options = []
@@ -22,7 +23,6 @@ export class GetFunction implements ICLIFunction {
     public setOptions(userOptions: string[]): void {
         for(const userOption in userOptions) {
             const option = this.validOptions.find(option => option.name === userOption)
-
             if(!option)
                 throw new InvalidOptionException('Invalid option provided. Type alix help for more info.')
 

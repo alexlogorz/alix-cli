@@ -1,9 +1,10 @@
-import { HelpFunction } from './../../src/commands/HelpFunction';
-import type { IFunction } from './../../src/models/IFunction';
+import { HelpFunction } from './../../src/cli-functions/HelpFunction';
+import type { ICLIFunction } from './../../src/models/ICLIFunction';
 
 describe('HelpFunction Unit Tests', function helpCommand()
 {
-    let command: IFunction;
+    let command: ICLIFunction;
+    
     beforeEach(function setup()
     {
         // ARRANGE

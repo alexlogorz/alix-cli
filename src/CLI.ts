@@ -8,18 +8,14 @@ export class CLI {
     private functionToExecute: ICLIFunction | undefined;
     
     constructor(private readonly validCliFunctions: Array<ICLIFunction>) {
+        const args = process.argv.slice(2);
+        const parsedArgs: IParsedArgs = this.parseArgs(args)
+        const { userOptions, functionName, functionParam } = parsedArgs
+        
+        const cliFunction = this.validCliFunctions.find(cliFunction => cliFunction.name === functionName);
+
         try {
-            const args = process.argv.slice(2);
-            const parsedArgs: IParsedArgs = this.parseArgs(args)
-
-            const userOptions = parsedArgs.userOptions
-            const functionParam = parsedArgs.functionParam
-            const functionName = parsedArgs.functionName
-
-            const _functionToExecute = this.validCliFunctions.find(cliFunction => cliFunction.name === functionName);
-
-            this.setFunctionToExecute(userOptions, functionParam, _functionToExecute)
-
+            this.setFunctionToExecute(userOptions, functionParam, cliFunction)
         } 
         catch (error: any) {
             console.error(error.errorCode, error.message);
@@ -27,7 +23,7 @@ export class CLI {
         }
     }
 
-    public setFunctionToExecute(userOptions: string[], param: string, cliFunction?: ICLIFunction): void {
+    private setFunctionToExecute(userOptions: string[], param: string, cliFunction?: ICLIFunction): void {
         if(!cliFunction) 
             throw new InvalidFunctionException("Invalid cli function. Type alix help for more info.");
         
@@ -35,7 +31,7 @@ export class CLI {
         this.functionToExecute?.setParam(param)
     }
 
-    public parseArgs(args: string[]): IParsedArgs {
+    private parseArgs(args: string[]): IParsedArgs {
         if (args.length < 1) 
             throw new ArgCountException('Invalid number of arguments. Type alix help for more info.');
     
