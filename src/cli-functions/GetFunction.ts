@@ -32,7 +32,6 @@ export class GetFunction implements ICLIFunction {
         this.param = value
     }
 
-    // This one can have multiple results depending on the options 
     public async executeAsync(): Promise<string> {
         try {
             let formattedResponse: string = ""
