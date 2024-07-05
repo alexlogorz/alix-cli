@@ -1,14 +1,25 @@
-import puppeteer, { Browser, Page } from "puppeteer";
 import fs from 'node:fs';
 import path from 'node:path';
+import puppeteer, { Browser, Page } from "puppeteer";
 import { GenerateContentResult, GenerativeModel, GoogleGenerativeAI } from "@google/generative-ai";
+import { ICLIFunction } from "../models/ICLIFunction";
 
 export class FunctionService {
     private model: GenerativeModel;
-    
+    private cliFunctions: Array<ICLIFunction>;
+
     constructor() {
         const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY || "")
         this.model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" })
+        this.cliFunctions = []
+    }
+
+    public getCliFunctions(): Array<ICLIFunction> {
+        return this.cliFunctions
+    }
+
+    public addCliFunction(cliFunction: ICLIFunction): void {
+        this.cliFunctions.push(cliFunction)
     }
 
     private extractJsonFromString(inputString: string) {

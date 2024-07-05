@@ -2,17 +2,18 @@ import { ICLIFunction } from './models/ICLIFunction';
 import { InvalidFunctionException } from './models/InvalidFunctionException';
 import { ArgCountException } from './models/ArgCountException';
 import { IParsedArgs } from './models/IParsedArgs'
+import { FunctionService } from './services/FunctionService';
 
 export class CLI {
 
     private functionToExecute: ICLIFunction | undefined;
     
-    constructor(private readonly validCliFunctions: Array<ICLIFunction>) {
+    constructor(private readonly functionService: FunctionService) {
         const args = process.argv.slice(2);
         const parsedArgs: IParsedArgs = this.parseArgs(args)
-        const { userOptions, functionName, functionParam } = parsedArgs
+        const { functionName, userOptions, functionParam } = parsedArgs
         
-        const cliFunction = this.validCliFunctions.find(cliFunction => cliFunction.name === functionName);
+        const cliFunction = this.functionService.getCliFunctions().find(cliFunction => cliFunction.name === functionName);
 
         try {
             this.setFunctionToExecute(userOptions, functionParam, cliFunction)
@@ -36,8 +37,8 @@ export class CLI {
             throw new ArgCountException('Invalid number of arguments. Type alix help for more info.');
     
         const parsedArgs: IParsedArgs = {
-            userOptions: args.slice(1, -1),
             functionName: args[0],
+            userOptions: args.slice(1, -1),
             functionParam: args[args.length - 1]
         }
 
