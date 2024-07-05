@@ -1,21 +1,14 @@
 #!/usr/bin/env node
 
-import { CLI } from "./CLI"; 
-import { TitleFunction } from "./cli-functions/TitleFunction";
-import { HelpFunction } from "./cli-functions/HelpFunction";
-import { CleanFunction } from "./cli-functions/CleanFunction";
-import { ImageFunction } from "./cli-functions/ImageFunction";
-import { SetFunction } from "./cli-functions/SetFunction";
-import { DescFunction } from "./cli-functions/DescFunction";
-import { GetFunction } from "./cli-functions/GetFunction";
 import path from 'path'
+import dotenv from 'dotenv'
+import { CLI } from "./CLI"; 
 import { ICLIFunction } from "./models/ICLIFunction";
 import { IOption } from "./models/IOptions";
 import { FunctionService } from "./services/FunctionService";
+import { GetFunction, SetFunction, CleanFunction, HelpFunction } from './cli-functions/functions';
 
-const envFilePath = path.join(__dirname, './../.env');
-
-require('dotenv').config({ path: envFilePath });
+dotenv.config({ path: path.join(__dirname, './../.env') });
 
 const validFunctions: ICLIFunction[] = []
 const functionService: FunctionService = new FunctionService();
@@ -27,9 +20,9 @@ const downloadOption: IOption = { name: '--pics' }
 
 // Create cli functions
 const getFunction = new GetFunction([ titleOption, descOption, downloadOption ], functionService)
-const helpFunction = new HelpFunction(functionService)
 const setFunction = new SetFunction(functionService);
 const cleanFunction = new CleanFunction(functionService);
+const helpFunction = new HelpFunction()
 
 // Push
 validFunctions.push(getFunction)
