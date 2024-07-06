@@ -1,33 +1,40 @@
 import { ICLIFunction } from '../models/ICLIFunction';
-import { ParamNotFoundException } from '../models/ParamNotFoundException';
-import { InvalidOptionException } from '../models/InvalidOptionException';
 import { IOption } from '../models/IOption';
 import { FunctionService } from '../services/FunctionService';
 import { ExecuteFunctionException } from '../models/ExecuteFunctionException';
+import { InvalidFunctionException } from '../models/InvalidFunctionException';
 
 export class GetFunction implements ICLIFunction {
     public name: string;
     
     private param: string;
+    private acceptedOptions: IOption[];
+    private userProvidedOptions: IOption[];
 
-    constructor(private readonly options: IOption[], private readonly functionService?: FunctionService) {
+    constructor(acceptedOptions: IOption[], private readonly functionService: FunctionService) {
         this.name = 'get'
         this.param = ''
+        this.userProvidedOptions = []
+        this.acceptedOptions = acceptedOptions
     }
 
-    public setOptions(userOptions: string[]): void {
-        for(const userOption in userOptions) {
-            const option = this.options.find(option => option.name === userOption)
-            if(!option)
-                throw new InvalidOptionException('Invalid option provided. Type alix help for more info.')
+    public setOptions(userOptions: string[] = []): void {
+        if(userOptions.length == 0)
+            throw new InvalidFunctionException('Please specify at least 1 option. Type alix help for more info.')
 
-            this.options.push(option)
+        for(const userOption in userOptions) {
+            const option = this.acceptedOptions.find(option => option.name === userOption.replace('--',''))
+            
+            if(!option)
+                throw new InvalidFunctionException('Invalid option specified. Type alix help for more info.')
+
+            this.userProvidedOptions.push(option)
         }
     }
 
     public setParam(value: string): void {
-        if(value === undefined)
-            throw new ParamNotFoundException("This function requires a parameter.")
+        if(value === '')
+            throw new InvalidFunctionException('No product url was specified. Type alix help for more info.')
 
         this.param = value
     }
@@ -36,18 +43,19 @@ export class GetFunction implements ICLIFunction {
         try {
             let formattedResponse: string = ""
 
-            // Go through each option and execute its corresponding cli function
-            this.options.forEach(async option => {
-                const cliFunction = this.functionService?.getCliFunctions().find(cliFunction => cliFunction.name === option.name.replace('--',''))
+            this.userProvidedOptions.forEach(async userOption => {
+                const correspondingFunction = this.functionService.getCliFunctions().find(cliFunction => cliFunction.name === userOption.name.replace('--',''))
+    
+                if(!correspondingFunction)
+                    throw new ExecuteFunctionException(`No corresponding function was found for option ${userOption.name}`)
+    
+                correspondingFunction.setParam(this.param)
                 
-                if(!cliFunction)
-                    throw new ExecuteFunctionException(`No matching function found for ${option.name}`)
-
-                const result = await cliFunction.executeAsync()
+                const result = await correspondingFunction.executeAsync()
                 
                 formattedResponse += result + '\n'
             })
-
+    
             return formattedResponse
         }
         catch(error: any) {

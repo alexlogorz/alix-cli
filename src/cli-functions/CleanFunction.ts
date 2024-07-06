@@ -1,8 +1,8 @@
-import fs from 'node:fs';
 import path from 'node:path';
 import { ICLIFunction } from '../models/ICLIFunction';
-import { ExecuteFunctionException } from './../models/ExecuteFunctionException';
 import { FunctionService } from '../services/FunctionService';
+import { ExecuteFunctionException } from '../models/ExecuteFunctionException';
+import { InvalidFunctionException } from '../models/InvalidFunctionException';
 
 export class CleanFunction implements ICLIFunction {
     private folderName: string;
@@ -10,29 +10,29 @@ export class CleanFunction implements ICLIFunction {
     
     public name: string;
 
-    constructor(private readonly functionService?: FunctionService) {
+    constructor(private readonly functionService: FunctionService) {
         this.folderName = 'product_images';
         this.folderPath = path.join(process.cwd(), this.folderName);
         this.name = 'clean'
     }
 
-    // This CLI function doesnt require any options.
-    public setOptions(options: string[]): void {
-        return undefined
+    public setOptions(options: string[] = []): void {
+        if(options.length > 0) 
+            throw new InvalidFunctionException('This command doesnt take any options. Type alix help for more info.')
     }
 
-    // This CLI function doesnt require a param.
     public setParam(value: string): void {
-        return undefined;
+        if(value.length > 0)
+            throw new InvalidFunctionException('This command doesnt take any parameters. Type alix help for more info.')
     }
 
     public async executeAsync(): Promise<string> {
         try {
-            const response: string = await this.functionService?.deleteImages(this.folderPath) || ''
+            const response: string = await this.functionService.deleteImages(this.folderPath) || ''
             return response
         }
         catch(error: any) {
-            throw new ExecuteFunctionException(error.message)
+            throw new ExecuteFunctionException(error.message);
         }
     }
 }

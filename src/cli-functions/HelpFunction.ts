@@ -1,4 +1,6 @@
+import { ExecuteFunctionException } from '../models/ExecuteFunctionException';
 import { ICLIFunction } from '../models/ICLIFunction';
+import { InvalidFunctionException } from '../models/InvalidFunctionException';
 import { FunctionService } from '../services/FunctionService';
 import packageJSON from './../../package.json';
 
@@ -12,13 +14,15 @@ export class HelpFunction implements ICLIFunction
 
 
     // This ClI function doesnt require any options.
-    public setOptions(options: string[]): void {
-        return undefined
+    public setOptions(options: string[] = []): void {
+        if(options.length > 0) 
+            throw new InvalidFunctionException('Invalid function format. Type alix help for more info.')
     }
     
     // This CLI function doesnt require a param.
     public setParam(value: string): void {
-        return undefined
+        if(value.length > 0)
+            throw new InvalidFunctionException('Invalid function format. Type alix help for more info.')
     }
    
     public async executeAsync(): Promise<string>
@@ -38,10 +42,17 @@ export class HelpFunction implements ICLIFunction
          Alix (Ali extract) is a semi-automation tool used for Dropshipping. Developed by Alex Logorz.
             
          Available commands:
-            1. Type alix set "your_api_key_value" to set your api key. This is required for the commands that use generative ai.
-            2. alix get --title --desc --pics "your_product_url". At least 1 option, such as --title must be specified.
-            3. Type alix clean to clear all images from the product_images folder. Useful for when you are done using the downloaded images.
-            4. Type alix help for a list of available commands and version info. 
+            1. alix set "your api key here" 
+               - This is required for commands that use generative ai.
+
+            2. alix get --title --desc --pics "your products url here"
+               - At least 1 option, such as --title must be specified.
+
+            3. alix clean 
+               - Deletes the images from product_images
+
+            4. alix help
+               - List of available commands and version info.
         
         `;
         

@@ -13,12 +13,14 @@ const functionService: FunctionService = new FunctionService();
 
 const options: IOption[] = [ { name: '--title' }, { name: '--desc' }, { name: '--pics' } ]
 
+// Add the valid cli functions that we are supporting.
 functionService.addCliFunction(new GetFunction(options, functionService))
 functionService.addCliFunction(new SetFunction(functionService))
 functionService.addCliFunction(new CleanFunction(functionService))
 functionService.addCliFunction(new HelpFunction())
 
-// The CLI will take the users command line args and process them.
+// Takes the cli args and parses them.
 const alix = new CLI(functionService);
 
-alix.executeCLIFunction();
+// Executes the function that was specified by the user.
+alix.executeAsync();

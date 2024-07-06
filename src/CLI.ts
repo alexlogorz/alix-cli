@@ -1,6 +1,5 @@
 import { ICLIFunction } from './models/ICLIFunction';
 import { InvalidFunctionException } from './models/InvalidFunctionException';
-import { ArgCountException } from './models/ArgCountException';
 import { IParsedArgs } from './models/IParsedArgs'
 import { FunctionService } from './services/FunctionService';
 
@@ -27,25 +26,35 @@ export class CLI {
     private setFunctionToExecute(userOptions: string[], param: string, cliFunction?: ICLIFunction): void {
         if(!cliFunction) 
             throw new InvalidFunctionException("Invalid cli function. Type alix help for more info.");
+
+        this.functionToExecute = cliFunction
         
         this.functionToExecute?.setOptions(userOptions)
         this.functionToExecute?.setParam(param)
     }
 
     private parseArgs(args: string[]): IParsedArgs {
-        if (args.length < 1) 
-            throw new ArgCountException('Invalid number of arguments. Type alix help for more info.');
-    
-        const parsedArgs: IParsedArgs = {
-            functionName: args[0],
-            userOptions: args.slice(1, -1),
-            functionParam: args[args.length - 1]
-        }
+        try {
+            if (args.length == 0) 
+                throw new InvalidFunctionException('No function was specified. Type alix help for more info.');
+        
+            const parsedArgs: IParsedArgs = {
+                functionName: args[0],
+                userOptions: args.length > 2 ? args.slice(1, -1) : [],
+                functionParam: args.length > 1 ? args[args.length - 1] : ''
+            }
+            
+            console.log('parsedArgs', parsedArgs)
 
-        return parsedArgs;
+            return parsedArgs;
+        }
+        catch(error: any) {
+            console.error(error.errorCode, error.message);
+            process.exit(0);
+        }
     }
 
-    public async executeCLIFunction(): Promise<void> {
+    public async executeAsync(): Promise<void> {
         try {
             const output = await this.functionToExecute!.executeAsync();
             console.log(output);
