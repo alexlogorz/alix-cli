@@ -1,66 +1,64 @@
+import { CustomErrorException } from '../models/CustomErrorException';
 import { ICLIFunction } from '../models/ICLIFunction';
 import { IOption } from '../models/IOption';
 import { FunctionService } from '../services/FunctionService';
-import { ExecuteFunctionException } from '../models/ExecuteFunctionException';
-import { InvalidFunctionException } from '../models/InvalidFunctionException';
 
 export class GetFunction implements ICLIFunction {
     public name: string;
     
     private param: string;
-    private acceptedOptions: IOption[];
-    private userProvidedOptions: IOption[];
+    private availableOptions: IOption[];
+    private userOptions: IOption[];
 
-    constructor(acceptedOptions: IOption[], private readonly functionService: FunctionService) {
+    constructor(availableOptions: IOption[], private readonly functionService?: FunctionService) {
         this.name = 'get'
         this.param = ''
-        this.userProvidedOptions = []
-        this.acceptedOptions = acceptedOptions
+        this.availableOptions = availableOptions
+        this.userOptions = []
     }
 
-    public setOptions(userOptions: string[] = []): void {
-        if(userOptions.length == 0)
-            throw new InvalidFunctionException('Please specify at least 1 option. Type alix help for more info.')
-
-        for(const userOption in userOptions) {
-            const option = this.acceptedOptions.find(option => option.name === userOption.replace('--',''))
-            
-            if(!option)
-                throw new InvalidFunctionException('Invalid option specified. Type alix help for more info.')
-
-            this.userProvidedOptions.push(option)
+    public setOptions(optionNames: string[] = []): void {
+        try {
+            if(optionNames.length == 0)
+                throw new CustomErrorException('Options error:', 'Please specify at least 1 option. Type alix help for more info.')
+    
+            for(const optionName of optionNames) {
+                const acceptedOption = this.availableOptions.find(option => option.name === optionName)
+                
+                if(!acceptedOption)
+                    throw new CustomErrorException('Options error:', 'Invalid option specified. Type alix help for more info.')
+    
+                this.userOptions.push(acceptedOption)
+            }
+        }
+        catch(error: any) {
+            console.error(error.errorCode, error.message)
+            process.exit(1)
         }
     }
 
     public setParam(value: string): void {
-        if(value === '')
-            throw new InvalidFunctionException('No product url was specified. Type alix help for more info.')
-
-        this.param = value
+        try {
+            if(value === '')
+                throw new CustomErrorException('Param error:', 'No product url was specified. Type alix help for more info.')
+            
+            this.param = value
+        }
+        catch(error: any) {
+            console.error(error.errorCode, error.message)
+            process.exit(1)
+        }
     }
 
     public async executeAsync(): Promise<string> {
-        try {
-            let formattedResponse: string = ""
+        let result: string = ''
 
-            this.userProvidedOptions.forEach(async userOption => {
-                const correspondingFunction = this.functionService.getCliFunctions().find(cliFunction => cliFunction.name === userOption.name.replace('--',''))
-    
-                if(!correspondingFunction)
-                    throw new ExecuteFunctionException(`No corresponding function was found for option ${userOption.name}`)
-    
-                correspondingFunction.setParam(this.param)
-                
-                const result = await correspondingFunction.executeAsync()
-                
-                formattedResponse += result + '\n'
-            })
-    
-            return formattedResponse
-        }
-        catch(error: any) {
-            throw new ExecuteFunctionException(error.message)
-        }
+        this.userOptions.forEach(async userOption => {
+            const response = await userOption.actionAsync(this.param)
+            result += response + '\n'
+        })
+
+        return result
     }
 
 }

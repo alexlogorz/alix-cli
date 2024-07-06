@@ -3,11 +3,12 @@ import path from 'node:path';
 import puppeteer, { Browser, Page } from "puppeteer";
 import { GenerateContentResult, GenerativeModel, GoogleGenerativeAI } from "@google/generative-ai";
 import { ICLIFunction } from "../models/ICLIFunction";
+import { CustomErrorException } from '../models/CustomErrorException';
 
 export class FunctionService {
     private model: GenerativeModel;
     private cliFunctions: Array<ICLIFunction>;
-
+    
     constructor() {
         const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY || "")
         this.model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" })
@@ -57,25 +58,31 @@ export class FunctionService {
 
     // Get the product desc from url and process it using generative ai.
     public async getDescAsync(url: string): Promise<string> {
-        const title: string = await this.getTitleAsync(url)
-
-        const prompt: string = `
-        Given this product title: ${title}. 
-        Write me a short (1-2 sentence) product description to increase sales. Put it in the following JSON format:
-        {
-            description:
-            selling_points: []
-            conclusion:
+        try {
+            const title: string = await this.getTitleAsync(url)
+            const prompt: string = `
+            Given this product title: ${title}. 
+            Write me a short (1-2 sentence) product description to increase sales. Put it in the following JSON format:
+            {
+                description:
+                selling_points: []
+                conclusion:
+            }
+            `
+            const result: GenerateContentResult = await this.model.generateContent(prompt);
+            const response = await result.response;
+            const parsedJson = JSON.parse(this.extractJsonFromString(response.text()))
+            const formattedSellingPoints = parsedJson.selling_points.map((point: any) => `✔️ ${point}`).join('\n\n');
+            
+            const formattedTextResponse = `${parsedJson.description}\n\n${formattedSellingPoints}\n\n${parsedJson.conclusion}
+            `
+            return `\x1b[32mProduct description (Generative AI):\x1b[0m ${formattedTextResponse}`
         }
-        `
-        const result: GenerateContentResult = await this.model.generateContent(prompt);
-        const response = await result.response;
-        const parsedJson = JSON.parse(this.extractJsonFromString(response.text()))
-        const formattedSellingPoints = parsedJson.selling_points.map((point: any) => `✔️ ${point}`).join('\n\n');
-        
-        const formattedTextResponse = `${parsedJson.description}\n\n${formattedSellingPoints}\n\n${parsedJson.conclusion}
-        `
-        return `\x1b[32mProduct description (Generative AI):\x1b[0m ${formattedTextResponse}`
+        catch(error: any) {
+            const customError = new CustomErrorException('Description error:', error.message)
+            console.error(customError.errorCode, customError.message)
+            process.exit(1)
+        }
     }
 
     // Get the product title form url and process it using generative ai.
@@ -83,24 +90,27 @@ export class FunctionService {
         const browser: Browser = await puppeteer.launch();
         const page: Page = await browser.newPage();
         
-        await page.goto(url);
+        try {
+            await page.goto(url);
         
-        const title: string = await page.evaluate(() => {
-            const titleElement = document.querySelector('h1[data-pl="product-title"]');
+            const title: string = await page.evaluate(() => {
+                const titleElement = document.querySelector('h1[data-pl="product-title"]');
+                return titleElement?.textContent || ''
+            });
 
-            if(!titleElement) 
-                throw Error("No title found.");
+            await browser.close(); 
 
-            return titleElement.textContent || ""
-        });
+            const prompt: string = `Given this product title: ${title}. Re write it and make it between 70-100 characters in length. Do not include any formatting in your answer.`
+            const result: GenerateContentResult = await this.model.generateContent(prompt)
+            const generatedTitle = await result.response.text()
 
-        await browser.close(); 
-
-        const prompt: string = `Given this product title: ${title}. Re write it and make it between 70-100 characters in length. Do not include any formatting in your answer.`
-        const result: GenerateContentResult = await this.model.generateContent(prompt)
-        const generatedTitle = await result.response.text()
-
-        return `\x1b[32mProduct title (Generative AI):\x1b[0m ${generatedTitle}`
+            return `\x1b[32mProduct title (Generative AI):\x1b[0m ${generatedTitle}`
+        }
+        catch(error: any) {
+            const customError = new CustomErrorException('Title error:', error.message)
+            console.error(customError.errorCode, customError.message)
+            process.exit(1)
+        }
     }
 
     // Download product images from url
@@ -108,36 +118,43 @@ export class FunctionService {
         const browser: Browser = await puppeteer.launch();
         const page: Page = await browser.newPage();
         
-        await page.goto(url);
+        try {
+            await page.goto(url)
         
-        if (!fs.existsSync(destination)) 
-            fs.mkdirSync(destination);
-        
-        const imageUrls: string[] = await page.evaluate(() => {
-            const images: NodeListOf<HTMLImageElement> = document.querySelectorAll('.slider--img--D7MJNPZ img');
-            const urls: string[] = [];
-
-            images.forEach(img => {
-                const imgUrl = img.getAttribute('src')?.replace('_80x80', '')
-                urls.push(imgUrl || "");
-            });
-
-            return urls;
-        });
-        
-        for (let i = 0; i < imageUrls.length; i++) {
-            const imageUrl: string = imageUrls[i];
-            const imageName: string = `image_${i}.jpg`;
-            const imagePath: string = path.join(destination, imageName);
-            const imageStream = await page.goto(imageUrl);
+            if (!fs.existsSync(destination)) 
+                fs.mkdirSync(destination);
             
-            if(imageStream)
-                fs.writeFileSync(imagePath, await imageStream.buffer());
-        }
-        
-        await browser.close();
+            const imageUrls: string[] = await page.evaluate(() => {
+                const images: NodeListOf<HTMLImageElement> = document.querySelectorAll('.slider--img--D7MJNPZ img');
+                const urls: string[] = [];
 
-        return `\x1b[32m${imageUrls.length} downloaded\x1b[0m into ${destination}`
+                images.forEach(img => {
+                    const imgUrl = img.getAttribute('src')?.replace('_80x80', '')
+                    urls.push(imgUrl || "");
+                });
+
+                return urls;
+            });
+            
+            for (let i = 0; i < imageUrls.length; i++) {
+                const imageUrl: string = imageUrls[i];
+                const imageName: string = `image_${i}.jpg`;
+                const imagePath: string = path.join(destination, imageName);
+                const imageStream = await page.goto(imageUrl);
+                
+                if(imageStream)
+                    fs.writeFileSync(imagePath, await imageStream.buffer());
+            }
+            
+            await browser.close();
+
+            return `\x1b[32m${imageUrls.length} downloaded\x1b[0m into ${destination}`
+        }
+        catch(error: any) {
+            const customError = new CustomErrorException('Download error:', error.message)
+            console.error(customError.errorCode, customError.message)
+            process.exit(1)
+        }
     }
 
 }

@@ -6,21 +6,49 @@ import { CLI } from "./CLI";
 import { IOption } from "./models/IOption";
 import { FunctionService } from "./services/FunctionService";
 import { GetFunction, SetFunction, CleanFunction, HelpFunction } from './cli-functions/functions';
+import { ICLIFunction } from './models/ICLIFunction';
 
 dotenv.config({ path: path.join(__dirname, './../.env') });
 
 const functionService: FunctionService = new FunctionService();
 
-const options: IOption[] = [ { name: '--title' }, { name: '--desc' }, { name: '--pics' } ]
+// Configure the options we are supporting.
+const options: IOption[] = [ 
+    {
+        name: '--title',
+        actionAsync: async function (param: string): Promise<string> {
+            const result = await functionService.getTitleAsync(param)
+            return result
+        }
+    }, 
+    {
+        name: '--desc',
+        actionAsync: async function (param: string): Promise<string> {
+            const result = await functionService.getTitleAsync(param)
+            return result
+        }
+    },
+    {
+        name: '--pics',
+        actionAsync: async function (param: string): Promise<string> {
+            const result = await functionService.getTitleAsync(param)
+            return result
+        }
+    } 
+]
 
-// Add the valid cli functions that we are supporting.
-functionService.addCliFunction(new GetFunction(options, functionService))
-functionService.addCliFunction(new SetFunction(functionService))
-functionService.addCliFunction(new CleanFunction(functionService))
-functionService.addCliFunction(new HelpFunction())
+// Configure the commands we are supporting.
+const commands: ICLIFunction[] = [ 
+    new GetFunction(options),
+    new SetFunction(functionService),
+    new CleanFunction(functionService),
+    new HelpFunction()
+]
 
-// Takes the cli args and parses them.
+// Adds the commands to the service.
+commands.forEach(command => { functionService.addCliFunction(command) })
+
+// Takes the cli args and sets the target command for execution.
 const alix = new CLI(functionService);
 
-// Executes the function that was specified by the user.
 alix.executeAsync();

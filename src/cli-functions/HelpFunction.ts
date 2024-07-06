@@ -1,6 +1,5 @@
-import { ExecuteFunctionException } from '../models/ExecuteFunctionException';
+import { CustomErrorException } from '../models/CustomErrorException';
 import { ICLIFunction } from '../models/ICLIFunction';
-import { InvalidFunctionException } from '../models/InvalidFunctionException';
 import { FunctionService } from '../services/FunctionService';
 import packageJSON from './../../package.json';
 
@@ -15,14 +14,28 @@ export class HelpFunction implements ICLIFunction
 
     // This ClI function doesnt require any options.
     public setOptions(options: string[] = []): void {
-        if(options.length > 0) 
-            throw new InvalidFunctionException('Invalid function format. Type alix help for more info.')
+        try {
+            if(options.length > 0) 
+                throw new CustomErrorException('Options error:', 'Invalid function format. Type alix help for more info.')
+        }
+        catch(error: any) {
+            console.error(error.errorCode, error.message)
+            process.exit(1)
+        }
+        
     }
     
     // This CLI function doesnt require a param.
     public setParam(value: string): void {
-        if(value.length > 0)
-            throw new InvalidFunctionException('Invalid function format. Type alix help for more info.')
+        try {
+            if(value.length > 0)
+                throw new CustomErrorException('Param error:', 'Invalid function format. Type alix help for more info.')
+        }
+        catch(error: any) {
+            console.error(error.errorCode, error.message)
+            process.exit(1)
+        }
+        
     }
    
     public async executeAsync(): Promise<string>
@@ -37,11 +50,11 @@ export class HelpFunction implements ICLIFunction
          \\____|___ / |________| |___| /___/\\__\\
          \x1b[0m
           
-         version ${version}
+         \x1b[32mVersion ${version}\x1b[0m
             
          Alix (Ali extract) is a semi-automation tool used for Dropshipping. Developed by Alex Logorz.
             
-         Available commands:
+         \x1b[32mAvailable commands:\x1b[0m
             1. alix set "your api key here" 
                - This is required for commands that use generative ai.
 
