@@ -2,7 +2,17 @@
 
 An application designed to extract product data from AliExpress, featuring advanced generative AI for automatic creation of titles and descriptions.
 
-### Screenshots
+## Table of Contents
+
+- [Gemini AI](#gemini-ai)
+- [Screenshots](#screenshots)
+- [Installation](#installation)
+  - [Contributor](#contributor)
+  - [Personal Use](#personal-use)
+- [Usage](#usage)
+- [Support](#support)
+
+## Screenshots
    ```bash
    alix help
    ```
@@ -11,16 +21,6 @@ An application designed to extract product data from AliExpress, featuring advan
    alix get --title --desc --pics “https://www.aliexpress.us/item/3256806780011687.html”
    ```
 ![Alix Pic 1](./assets/alix%20pic%201.png)
-
-## Table of Contents
-
-- [Gemini AI](#gemini-ai)
-- [Installation](#installation)
-  - [Contributor](#contributor)
-  - [Personal Use](#personal-use)
-- [Usage](#usage)
-- [Support](#support)
-- [Quick Installation](#quick-installation)
 
 ## Gemini AI
 This tool uses Google's Gemini AI which requires an api key. It can craft AliExpress product descriptions based on the product titles, leveraging advanced language understanding to enhance visibility, sales and save you time.
@@ -34,7 +34,7 @@ If you use Gemini API from a project that has billing enabled, your use will be 
 
 ## Installation
 
-### Contributor
+#### Contributor
 
 Before you begin, make sure you have [NodeJs](https://nodejs.org/en/download/package-manager) installed on your machine. After installation, follow these steps:
 
@@ -58,7 +58,7 @@ Before you begin, make sure you have [NodeJs](https://nodejs.org/en/download/pac
    ```bash
     npm install -g .
    ```
-### Personal Use
+#### Personal Use
 
 | Windows      | MacOS    |
 | :------------ | :------------ |
