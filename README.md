@@ -82,10 +82,6 @@ Deletes all the images from the product_images folder
 ``` bash
 alix clean
 ```
-Displays a list of commands, options and version info
-``` bash
-alix help
-```
 
 **Important**
 1. Your api key and product links must be enclosed in double quotation marks.
