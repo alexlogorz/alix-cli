@@ -60,12 +60,13 @@ export class GetCommand implements ICommand {
 
     // Execute all the options into a formatted response
     public async executeAsync(): Promise<string> {
-        let result: string = ''
+        let result: string = '\n'
 
-        this.requestedOptions.forEach(async requestedOption => {
+        for(const requestedOption of this.requestedOptions) {
+            requestedOption.setParam(this.param)
             const response = await requestedOption.executeAsync()
-            result += response + '\n'
-        })
+            result += (this.requestedOptions.length > 1) ? response + '\n' : response 
+        }
 
         return result
     }

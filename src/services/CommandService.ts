@@ -76,7 +76,7 @@ export class CommandService {
             
             const formattedTextResponse = `${parsedJson.description}\n\n${formattedSellingPoints}\n\n${parsedJson.conclusion}
             `
-            return `\x1b[32mProduct description (Generative AI):\x1b[0m ${formattedTextResponse}`
+            return `\x1b[32mProduct description (Generative AI):\x1b[0m\n${formattedTextResponse}`
         }
         catch(error: any) {
             const customError = new CustomErrorException('Description error:', error.message)
@@ -104,7 +104,7 @@ export class CommandService {
             const result: GenerateContentResult = await this.model.generateContent(prompt)
             const generatedTitle = await result.response.text()
 
-            return `\x1b[32mProduct title (Generative AI):\x1b[0m ${generatedTitle}`
+            return `\x1b[32mProduct title (Generative AI):\x1b[0m\n${generatedTitle}`
         }
         catch(error: any) {
             const customError = new CustomErrorException('Title error:', error.message)
@@ -148,7 +148,7 @@ export class CommandService {
             
             await browser.close();
 
-            return `\x1b[32m${imageUrls.length} downloaded\x1b[0m into ${destination}`
+            return `\x1b[32m${imageUrls.length} images\x1b[0m downloaded into ${destination}`
         }
         catch(error: any) {
             const customError = new CustomErrorException('Download error:', error.message)
