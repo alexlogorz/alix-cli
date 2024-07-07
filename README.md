@@ -2,8 +2,15 @@
 
 An application designed to extract product data from AliExpress, featuring advanced generative AI for automatic creation of titles and descriptions.
 
-![Alix Pic 1](../assets/alix%20pic%201.png)
-![Alix Pic 2](../assets/alix%20pic%202.png)
+#### Screenshots (macOS)
+``` bash
+alix help
+```
+![Alix Pic 2](./assets/alix%20pic%202.png)
+``` bash
+alix get --title --desc --pics “https://www.aliexpress.us/us/item/3256806780011687.html”
+```
+![Alix Pic 1](./assets/alix%20pic%201.png)
 
 ## Table of Contents
 
