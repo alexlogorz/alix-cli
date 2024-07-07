@@ -70,21 +70,21 @@ Show a list of available commands and version info
 alix help
 ```
 
-Sets your api key
+Sets your api key. This is needed for commands that us generative ai.
 ``` bash
-alix set "your_gemini_api_key"
+alix set "your api key here"
 ```
-Gets the products title
+Gets the title. More options can be specified.
 ``` bash
-alix title "link_to_aliexpress_product"
+alix get --title "link to product here"
 ```
-Downloads all the pictures into a folder
-``` bash
-alix images "link_to_aliexpress_product"
-```
-Removes all the pictures from the folder
+Deletes all the images from the product_images folder
 ``` bash
 alix clean
+```
+Displays a list of commands, options and version info
+``` bash
+alix help
 ```
 
 **Important**
