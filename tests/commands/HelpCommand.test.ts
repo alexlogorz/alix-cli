@@ -1,14 +1,16 @@
-import { HelpFunction } from './../../src/cli-functions/HelpFunction';
-import type { ICLIFunction } from './../../src/models/ICLIFunction';
+import { CommandService } from '../../src/services/CommandService';
+import { HelpCommand } from './../../src/commands/HelpCommand';
+import type { ICommand } from './../../src/models/ICommand';
 
-describe('HelpFunction Unit Tests', function helpCommand()
+describe('HelpCommand Unit Tests', function helpCommand()
 {
-    let command: ICLIFunction;
-    
+    let command: ICommand;
+    const commandService: CommandService = new CommandService();
+
     beforeEach(function setup()
     {
         // ARRANGE
-        command = new HelpFunction();
+        command = new HelpCommand(commandService);
     });
 
     it('should output instructions on various operations', function shouldDisplayHelpOptions()

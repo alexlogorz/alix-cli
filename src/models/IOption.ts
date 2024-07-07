@@ -1,5 +1,7 @@
+export interface IOption 
+{
+    readonly name: string;
 
-export interface IOption {
-    name: string;
+    setParam(value: string): void;
     executeAsync(): Promise<string>
 } 

@@ -9,7 +9,7 @@ export class SetCommand implements ICommand {
     private envFilePath: string;
     private param: string;
 
-    constructor(private readonly commandService?: CommandService) {
+    constructor(private readonly commandService: CommandService) {
         this.name = 'set'
         this.param = ''
         this.envFilePath = path.join(__dirname, './../../.env');
@@ -40,7 +40,7 @@ export class SetCommand implements ICommand {
     }
 
     public async executeAsync(): Promise<string> {
-        const result = this.commandService?.setApiKey(this.param, this.envFilePath) || ''
+        const result = this.commandService.setApiKey(this.param, this.envFilePath)
         return result
     }
 

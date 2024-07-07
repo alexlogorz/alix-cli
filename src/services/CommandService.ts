@@ -8,7 +8,7 @@ import { CustomErrorException } from '../models/CustomErrorException';
 export class CommandService {
     private model: GenerativeModel;
     private cliCommands: Array<ICommand>;
-    
+
     constructor() {
         const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY || "")
         this.model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" })
@@ -19,7 +19,7 @@ export class CommandService {
         return this.cliCommands
     }
 
-    public addCliCommands(cliCommand: ICommand): void {
+    public addCliCommand(cliCommand: ICommand): void {
         this.cliCommands.push(cliCommand)
     }
 

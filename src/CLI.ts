@@ -14,13 +14,13 @@ export class CLI {
         
         const cliCommand = this.commandService.getCliCommands().find(cliCommand => cliCommand.name === commandName);
 
-        this.setFunctionToExecute(userOptions, commandParam, cliCommand)
+        this.setCommandToExecute(userOptions, commandParam, cliCommand)
     }
 
-    private setFunctionToExecute(userOptions: string[], param: string, cliCommand?: ICommand): void {
+    private setCommandToExecute(userOptions: string[], param: string, cliCommand?: ICommand): void {
         try {
             if(!cliCommand) 
-                throw new CustomErrorException('Command error:', 'Invalid cli function. Type alix help for more info.');
+                throw new CustomErrorException('Command error:', 'Invalid cli command. Type alix help for more info.');
     
             this.commandToExecute = cliCommand
             
@@ -36,7 +36,7 @@ export class CLI {
     private parseArgs(args: string[]): IParsedArgs {
         try {
             if (args.length == 0) 
-                throw new CustomErrorException('Parsing error:', 'No function was specified. Type alix help for more info.');
+                throw new CustomErrorException('Parsing error:', 'No command was specified. Type alix help for more info.');
 
             const parsedArgs: IParsedArgs = {
                 commandName: args[0],

@@ -7,12 +7,12 @@ export class HelpCommand implements ICommand
 {
     public name: string;
 
-    constructor(private readonly commandService?: CommandService) {
+    constructor(private readonly commandService: CommandService) {
         this.name = 'help'
     }
 
 
-    // This ClI function doesnt require any options.
+    // This ClI command doesnt require any options.
     public setOptions(options: string[] = []): void {
         try {
             if(options.length > 0) 
@@ -25,7 +25,7 @@ export class HelpCommand implements ICommand
         
     }
     
-    // This CLI function doesnt require a param.
+    // This CLI command doesnt require a param.
     public setParam(value: string): void {
         try {
             if(value.length > 0)

@@ -9,7 +9,7 @@ export class CleanCommand implements ICommand {
     
     public name: string;
 
-    constructor(private readonly functionService?: CommandService) {
+    constructor(private readonly commandService: CommandService) {
         this.folderName = 'product_images';
         this.folderPath = path.join(process.cwd(), this.folderName);
         this.name = 'clean'
@@ -38,7 +38,7 @@ export class CleanCommand implements ICommand {
     }
 
     public async executeAsync(): Promise<string> {
-        const response: string = await this.functionService?.deleteImages(this.folderPath) || ''
+        const response: string = await this.commandService.deleteImages(this.folderPath)
         return response
     }
 }
