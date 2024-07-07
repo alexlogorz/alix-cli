@@ -1,31 +1,31 @@
 import { CustomErrorException } from './models/CustomErrorException';
-import { ICLIFunction } from './models/ICLIFunction';
+import { ICommand } from './models/ICommand';
 import { IParsedArgs } from './models/IParsedArgs'
-import { FunctionService } from './services/FunctionService';
+import { CommandService } from './services/CommandService';
 
 export class CLI {
 
-    private functionToExecute: ICLIFunction | undefined;
+    private commandToExecute: ICommand | undefined;
     
-    constructor(private readonly functionService: FunctionService) {
+    constructor(private readonly commandService: CommandService) {
         const args = process.argv.slice(2);
         const parsedArgs: IParsedArgs = this.parseArgs(args)
-        const { functionName, userOptions, functionParam } = parsedArgs
+        const { commandName, userOptions, commandParam } = parsedArgs
         
-        const cliFunction = this.functionService.getCliFunctions().find(cliFunction => cliFunction.name === functionName);
+        const cliCommand = this.commandService.getCliCommands().find(cliCommand => cliCommand.name === commandName);
 
-        this.setFunctionToExecute(userOptions, functionParam, cliFunction)
+        this.setFunctionToExecute(userOptions, commandParam, cliCommand)
     }
 
-    private setFunctionToExecute(userOptions: string[], param: string, cliFunction?: ICLIFunction): void {
+    private setFunctionToExecute(userOptions: string[], param: string, cliCommand?: ICommand): void {
         try {
-            if(!cliFunction) 
+            if(!cliCommand) 
                 throw new CustomErrorException('Command error:', 'Invalid cli function. Type alix help for more info.');
     
-            this.functionToExecute = cliFunction
+            this.commandToExecute = cliCommand
             
-            this.functionToExecute?.setOptions(userOptions)
-            this.functionToExecute?.setParam(param)
+            this.commandToExecute?.setOptions(userOptions)
+            this.commandToExecute?.setParam(param)
         }
         catch(error: any) {
             console.error(error.errorCode, error.message)
@@ -39,9 +39,9 @@ export class CLI {
                 throw new CustomErrorException('Parsing error:', 'No function was specified. Type alix help for more info.');
 
             const parsedArgs: IParsedArgs = {
-                functionName: args[0],
+                commandName: args[0],
                 userOptions: args.length >=3 ? args.slice(1, -1) : [],
-                functionParam: args.length > 1 ? args[args.length - 1] : ''
+                commandParam: args.length > 1 ? args[args.length - 1] : ''
             }
 
             return parsedArgs
@@ -54,7 +54,7 @@ export class CLI {
     }
 
     public async executeAsync(): Promise<string> {
-        const output = await this.functionToExecute!.executeAsync()
+        const output = await this.commandToExecute!.executeAsync()
         return output
     }
 

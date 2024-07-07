@@ -2,25 +2,25 @@ import fs from 'node:fs';
 import path from 'node:path';
 import puppeteer, { Browser, Page } from "puppeteer";
 import { GenerateContentResult, GenerativeModel, GoogleGenerativeAI } from "@google/generative-ai";
-import { ICLIFunction } from "../models/ICLIFunction";
+import { ICommand } from "../models/ICommand";
 import { CustomErrorException } from '../models/CustomErrorException';
 
-export class FunctionService {
+export class CommandService {
     private model: GenerativeModel;
-    private cliFunctions: Array<ICLIFunction>;
+    private cliCommands: Array<ICommand>;
     
     constructor() {
         const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY || "")
         this.model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" })
-        this.cliFunctions = []
+        this.cliCommands = []
     }
 
-    public getCliFunctions(): Array<ICLIFunction> {
-        return this.cliFunctions
+    public getCliCommands(): Array<ICommand> {
+        return this.cliCommands
     }
 
-    public addCliFunction(cliFunction: ICLIFunction): void {
-        this.cliFunctions.push(cliFunction)
+    public addCliCommands(cliCommand: ICommand): void {
+        this.cliCommands.push(cliCommand)
     }
 
     private extractJsonFromString(inputString: string) {

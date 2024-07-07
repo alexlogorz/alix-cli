@@ -1,16 +1,16 @@
 import { CustomErrorException } from '../models/CustomErrorException';
-import { ICLIFunction } from '../models/ICLIFunction';
+import { ICommand } from '../models/ICommand';
 import { IOption } from '../models/IOption';
-import { FunctionService } from '../services/FunctionService';
+import { CommandService } from '../services/CommandService';
 
-export class GetFunction implements ICLIFunction {
+export class GetCommand implements ICommand {
     public name: string;
     
     private param: string;
     private availableOptions: IOption[];
     private userOptions: IOption[];
 
-    constructor(availableOptions: IOption[], private readonly functionService?: FunctionService) {
+    constructor(availableOptions: IOption[], private readonly commandService?: CommandService) {
         this.name = 'get'
         this.param = ''
         this.availableOptions = availableOptions
@@ -54,7 +54,7 @@ export class GetFunction implements ICLIFunction {
         let result: string = ''
 
         this.userOptions.forEach(async userOption => {
-            const response = await userOption.actionAsync(this.param)
+            const response = await userOption.executeAsync()
             result += response + '\n'
         })
 

@@ -1,15 +1,15 @@
 import path from 'node:path'
-import { ICLIFunction } from '../models/ICLIFunction';
-import { FunctionService } from '../services/FunctionService';
+import { ICommand } from '../models/ICommand';
+import { CommandService } from '../services/CommandService';
 import { CustomErrorException } from '../models/CustomErrorException';
 
-export class SetFunction implements ICLIFunction {
+export class SetCommand implements ICommand {
     public name: string;
     
     private envFilePath: string;
     private param: string;
 
-    constructor(private readonly functionService?: FunctionService) {
+    constructor(private readonly commandService?: CommandService) {
         this.name = 'set'
         this.param = ''
         this.envFilePath = path.join(__dirname, './../../.env');
@@ -40,7 +40,7 @@ export class SetFunction implements ICLIFunction {
     }
 
     public async executeAsync(): Promise<string> {
-        const result = this.functionService?.setApiKey(this.param, this.envFilePath) || ''
+        const result = this.commandService?.setApiKey(this.param, this.envFilePath) || ''
         return result
     }
 

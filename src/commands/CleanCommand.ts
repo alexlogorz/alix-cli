@@ -1,15 +1,15 @@
 import path from 'node:path';
-import { ICLIFunction } from '../models/ICLIFunction';
-import { FunctionService } from '../services/FunctionService';
+import { ICommand } from '../models/ICommand';
 import { CustomErrorException } from '../models/CustomErrorException';
+import { CommandService } from '../services/CommandService';
 
-export class CleanFunction implements ICLIFunction {
+export class CleanCommand implements ICommand {
     private folderName: string;
     private folderPath: string;
     
     public name: string;
 
-    constructor(private readonly functionService?: FunctionService) {
+    constructor(private readonly functionService?: CommandService) {
         this.folderName = 'product_images';
         this.folderPath = path.join(process.cwd(), this.folderName);
         this.name = 'clean'

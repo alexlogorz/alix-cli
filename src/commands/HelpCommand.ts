@@ -1,13 +1,13 @@
 import { CustomErrorException } from '../models/CustomErrorException';
-import { ICLIFunction } from '../models/ICLIFunction';
-import { FunctionService } from '../services/FunctionService';
-import packageJSON from './../../package.json';
+import { ICommand } from '../models/ICommand';
+import packageJSON from '../../package.json';
+import { CommandService } from '../services/CommandService';
 
-export class HelpFunction implements ICLIFunction
+export class HelpCommand implements ICommand
 {
     public name: string;
 
-    constructor(private readonly functionService?: FunctionService) {
+    constructor(private readonly commandService?: CommandService) {
         this.name = 'help'
     }
 
@@ -16,7 +16,7 @@ export class HelpFunction implements ICLIFunction
     public setOptions(options: string[] = []): void {
         try {
             if(options.length > 0) 
-                throw new CustomErrorException('Options error:', 'Invalid function format. Type alix help for more info.')
+                throw new CustomErrorException('Options error:', 'Invalid command format. Type alix help for more info.')
         }
         catch(error: any) {
             console.error(error.errorCode, error.message)
@@ -29,7 +29,7 @@ export class HelpFunction implements ICLIFunction
     public setParam(value: string): void {
         try {
             if(value.length > 0)
-                throw new CustomErrorException('Param error:', 'Invalid function format. Type alix help for more info.')
+                throw new CustomErrorException('Param error:', 'Invalid command format. Type alix help for more info.')
         }
         catch(error: any) {
             console.error(error.errorCode, error.message)

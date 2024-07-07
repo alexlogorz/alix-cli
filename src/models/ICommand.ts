@@ -1,4 +1,4 @@
-export interface ICLIFunction
+export interface ICommand
 {
     readonly name: string;
    

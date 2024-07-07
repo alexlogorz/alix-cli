@@ -1,5 +1,5 @@
 export interface IParsedArgs {
-    functionName: string;
+    commandName: string;
     userOptions: string[];
-    functionParam: string;
+    commandParam: string;
 }
