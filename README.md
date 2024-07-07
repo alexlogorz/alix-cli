@@ -4,8 +4,8 @@ An application designed to extract product data from AliExpress, featuring advan
 
 ## Table of Contents
 
-- [Gemini AI](#gemini-ai)
 - [Screenshots](#screenshots)
+- [Gemini AI](#gemini-ai)
 - [Installation](#installation)
   - [Contributor](#contributor)
   - [Personal Use](#personal-use)
@@ -23,7 +23,7 @@ An application designed to extract product data from AliExpress, featuring advan
 ![Alix Pic 1](./assets/alix%20pic%201.png)
 
 ## Gemini AI
-This tool uses Google's Gemini AI which requires an api key. It can craft AliExpress product descriptions based on the product titles, leveraging advanced language understanding to enhance visibility, sales and save you time.
+Google Gemini AI is an advanced artificial intelligence tool developed by Google, offering powerful language understanding and generation capabilities, ideal for enhancing projects and applications. This project leverages this technology to craft product descriptions and titles.
 
 #### Obtaining API Key
 1. Using your google account, sign into [Google AI Studio](https://ai.google.dev/aistudio)
