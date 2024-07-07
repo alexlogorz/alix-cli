@@ -2,20 +2,15 @@
 
 An application designed to extract product data from AliExpress, featuring advanced generative AI for automatic creation of titles and descriptions.
 
-#### Screenshots (macOS)
-``` bash
-alix help
-```
 ![Alix Pic 2](./assets/alix%20pic%202.png)
-``` bash
-alix get --title --desc --pics “https://www.aliexpress.us/us/item/3256806780011687.html”
-```
 ![Alix Pic 1](./assets/alix%20pic%201.png)
 
 ## Table of Contents
 
 - [Gemini AI](#gemini-ai)
 - [Installation](#installation)
+  - [Contributor](#contributor)
+  - [Personal Use](#personal-use)
 - [Usage](#usage)
 - [Support](#support)
 - [Quick Installation](#quick-installation)
@@ -31,6 +26,8 @@ This tool uses Google's Gemini AI which requires an api key. It can craft AliExp
 If you use Gemini API from a project that has billing enabled, your use will be subject to [pay-as-you-go](https://ai.google.dev/pricing?_gl=1*czahyb*_ga*Nzk0MjIzOTI2LjE3MTc1MDczNDc.*_ga_P1DBVKWT6V*MTcxNzUzMzI4Ny4zLjEuMTcxNzUzNTI2NS42MC4wLjE0Njc2OTIxOTI.) pricing. 
 
 ## Installation
+
+### Contributor
 
 Before you begin, make sure you have [NodeJs](https://nodejs.org/en/download/package-manager) installed on your machine. After installation, follow these steps:
 
@@ -54,6 +51,11 @@ Before you begin, make sure you have [NodeJs](https://nodejs.org/en/download/pac
    ```bash
     npm install -g .
    ```
+### Personal Use
+
+| Windows      | MacOS    |
+| :------------ | :------------ |
+| [AlixCLI-Win-Installer-V1.0.bat](https://raw.githubusercontent.com/alexlogorz/alix-cli/main/AlixCLI-Win-Installer-V1.0.bat) | Coming soon |
 
 ## Usage
 Show a list of available commands and version info
@@ -81,11 +83,6 @@ alix clean
 **Important**
 1. Your api key and product links must be enclosed in double quotation marks.
 2. This tool has only been tested on https://aliexpress.us
-
-## Quick Installation
-| Windows      | MacOS    |
-| :------------ | :------------ |
-| [AlixCLI-Win-Installer-V1.0.bat](https://raw.githubusercontent.com/alexlogorz/alix-cli/main/AlixCLI-Win-Installer-V1.0.bat) | Coming soon |
 
 ## Support
 If you need assistance regarding this tool, please reach me at alogorzmedia@gmail.com
