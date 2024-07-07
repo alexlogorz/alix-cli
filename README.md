@@ -1,6 +1,6 @@
 # Alix CLI
 
-Alix is a CLI tool that extracts product data and images from AliExpress. Moreover, it leverages generative AI to craft product descriptions for you.
+An application designed to extract product data from AliExpress, featuring advanced generative AI for automatic creation of titles and descriptions.
 
 ## Table of Contents
 
