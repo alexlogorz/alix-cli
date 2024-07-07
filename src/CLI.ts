@@ -11,7 +11,7 @@ export class CLI {
         const args = process.argv.slice(2);
         const parsedArgs: IParsedArgs = this.parseArgs(args)
         const { commandName, userOptions, commandParam } = parsedArgs
-        
+    
         const cliCommand = this.commandService.getCliCommands().find(cliCommand => cliCommand.name === commandName);
 
         this.setCommandToExecute(userOptions, commandParam, cliCommand)

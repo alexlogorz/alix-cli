@@ -24,4 +24,5 @@ commands.forEach(command => { commandService.addCliCommand(command) })
 // Takes the cli args and sets the target command for execution.
 const alix = new CLI(commandService);
 
-alix.executeAsync();
+alix.executeAsync()
+.then(result => console.log(result))
