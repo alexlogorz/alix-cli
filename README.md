@@ -65,7 +65,7 @@ Before you begin, make sure you have [NodeJs](https://nodejs.org/en/download/pac
 | [AlixCLI-Win-Installer-V1.0.bat](https://raw.githubusercontent.com/alexlogorz/alix-cli/main/AlixCLI-Win-Installer-V1.0.bat) | Coming soon |
 
 ## Usage
-Show a list of available commands and version info
+Show a list of available commands, options and version info.
 ``` bash
 alix help
 ```
@@ -74,11 +74,11 @@ Sets your api key. This is needed for commands that us generative ai.
 ``` bash
 alix set "your api key here"
 ```
-Gets the title. More options can be specified.
+Gets the products title. More options can be specified.
 ``` bash
 alix get --title "link to product here"
 ```
-Deletes all the images from the product_images folder
+Deletes all the images from the product_images folder.
 ``` bash
 alix clean
 ```
