@@ -2,30 +2,38 @@ import { CustomErrorException } from './models/CustomErrorException';
 import { ICommand } from './models/ICommand';
 import { IParsedArgs } from './models/IParsedArgs'
 import { CommandService } from './services/CommandService';
+import { GetCommand, SetCommand, CleanCommand, HelpCommand } from './commands/commands';
 
 export class CLI {
 
-    private commandToExecute: ICommand | undefined;
-    
+    private requestedCommand: ICommand | undefined;
+    private acceptedCommands: ICommand[];
+
     constructor(private readonly commandService: CommandService) {
+        this.acceptedCommands = [ 
+            new GetCommand(commandService),
+            new SetCommand(commandService),
+            new CleanCommand(commandService),
+            new HelpCommand(commandService)
+        ]
         const args = process.argv.slice(2);
         const parsedArgs: IParsedArgs = this.parseArgs(args)
         const { commandName, userOptions, commandParam } = parsedArgs
     
-        const cliCommand = this.commandService.getCliCommands().find(cliCommand => cliCommand.name === commandName);
+        const command = this.acceptedCommands.find(command => command.name === commandName);
 
-        this.setCommandToExecute(userOptions, commandParam, cliCommand)
+        this.setRequestedCommand(userOptions, commandParam, command)
     }
 
-    private setCommandToExecute(userOptions: string[], param: string, cliCommand?: ICommand): void {
+    private setRequestedCommand(userOptions: string[], param: string, command?: ICommand): void {
         try {
-            if(!cliCommand) 
+            if(!command) 
                 throw new CustomErrorException('Command error:', 'Invalid cli command. Type alix help for more info.');
     
-            this.commandToExecute = cliCommand
+            this.requestedCommand = command
             
-            this.commandToExecute?.setOptions(userOptions)
-            this.commandToExecute?.setParam(param)
+            this.requestedCommand?.setOptions(userOptions)
+            this.requestedCommand?.setParam(param)
         }
         catch(error: any) {
             console.error(error.errorCode, error.message)
@@ -54,7 +62,7 @@ export class CLI {
     }
 
     public async executeAsync(): Promise<string> {
-        const output = await this.commandToExecute!.executeAsync()
+        const output = await this.requestedCommand!.executeAsync()
         return output
     }
 

@@ -37,6 +37,8 @@ export class GetCommand implements ICommand {
                     throw new CustomErrorException('Options error:', 'Invalid option specified. Type alix help for more info.')
     
                 this.requestedOptions.push(acceptedOption)
+                // This option needs to go last because it changes to navigation
+                this.arrangeToLast(this.requestedOptions, '--pics')
             }
         }
         catch(error: any) {
@@ -58,15 +60,30 @@ export class GetCommand implements ICommand {
         }
     }
 
+    // Moves element to the end of the array.
+    private arrangeToLast(options: Array<IOption>, name: string): Array<IOption> {
+        const targetIndex = options.findIndex(option => option.name === name)
+        const targetOption: IOption = options[targetIndex]
+        const arranged: Array<IOption> = options.splice(targetIndex, 1)
+        
+        arranged.push(targetOption)
+        
+        return arranged
+    }
+
     // Execute all the options into a formatted response
     public async executeAsync(): Promise<string> {
         let result: string = '\n'
+
+        this.commandService.setNavigation(this.param)
 
         for(const requestedOption of this.requestedOptions) {
             requestedOption.setParam(this.param)
             const response = await requestedOption.executeAsync()
             result += (this.requestedOptions.length > 1) ? response + '\n' : response 
         }
+
+        this.commandService.closeNavigation()
 
         return result
     }

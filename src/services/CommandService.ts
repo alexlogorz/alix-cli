@@ -2,25 +2,26 @@ import fs from 'node:fs';
 import path from 'node:path';
 import puppeteer, { Browser, Page } from "puppeteer";
 import { GenerateContentResult, GenerativeModel, GoogleGenerativeAI } from "@google/generative-ai";
-import { ICommand } from "../models/ICommand";
 import { CustomErrorException } from '../models/CustomErrorException';
 
 export class CommandService {
     private model: GenerativeModel;
-    private cliCommands: Array<ICommand>;
+    private browser?: Browser;
+    private page?: Page;
 
     constructor() {
         const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY || "")
         this.model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" })
-        this.cliCommands = []
     }
 
-    public getCliCommands(): Array<ICommand> {
-        return this.cliCommands
+    public async setNavigation(url: string): Promise<void> {
+        this.browser = await puppeteer.launch()
+        this.page = await this.browser.newPage();
+        this.page.goto(url)
     }
 
-    public addCliCommand(cliCommand: ICommand): void {
-        this.cliCommands.push(cliCommand)
+    public async closeNavigation() {
+        await this.browser?.close()
     }
 
     private extractJsonFromString(inputString: string) {
@@ -87,18 +88,11 @@ export class CommandService {
 
     // Get the product title form url and process it using generative ai.
     public async getTitleAsync(url: string): Promise<string> {
-        const browser: Browser = await puppeteer.launch();
-        const page: Page = await browser.newPage();
-        
         try {
-            await page.goto(url);
-        
-            const title: string = await page.evaluate(() => {
+            const title: string = await this.page?.evaluate(() => {
                 const titleElement = document.querySelector('h1[data-pl="product-title"]');
                 return titleElement?.textContent || ''
-            });
-
-            await browser.close(); 
+            }) || ''
 
             const prompt: string = `Given this product title: ${title}. Re write it and make it between 70-100 characters in length. Do not include any formatting in your answer.`
             const result: GenerateContentResult = await this.model.generateContent(prompt)
@@ -115,16 +109,11 @@ export class CommandService {
 
     // Download product images from url
     public async downloadImagesAsync(url: string, destination: string): Promise<string> {
-        const browser: Browser = await puppeteer.launch();
-        const page: Page = await browser.newPage();
-        
         try {
-            await page.goto(url)
-        
             if (!fs.existsSync(destination)) 
                 fs.mkdirSync(destination);
             
-            const imageUrls: string[] = await page.evaluate(() => {
+            const imageUrls: string[] = await this.page?.evaluate(() => {
                 const images: NodeListOf<HTMLImageElement> = document.querySelectorAll('.slider--img--D7MJNPZ img');
                 const urls: string[] = [];
 
@@ -134,20 +123,18 @@ export class CommandService {
                 });
 
                 return urls;
-            });
+            }) || []
             
             for (let i = 0; i < imageUrls.length; i++) {
                 const imageUrl: string = imageUrls[i];
                 const imageName: string = `image_${i}.jpg`;
                 const imagePath: string = path.join(destination, imageName);
-                const imageStream = await page.goto(imageUrl);
+                const imageStream = await this.page?.goto(imageUrl);
                 
                 if(imageStream)
                     fs.writeFileSync(imagePath, await imageStream.buffer());
             }
             
-            await browser.close();
-
             return `\x1b[32m${imageUrls.length} images\x1b[0m downloaded into ${destination}`
         }
         catch(error: any) {
