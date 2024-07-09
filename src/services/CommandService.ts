@@ -4,20 +4,29 @@ import puppeteer, { Browser, Page } from "puppeteer";
 import { GenerateContentResult, GenerativeModel, GoogleGenerativeAI } from "@google/generative-ai";
 import { CustomErrorException } from '../models/CustomErrorException';
 
+// Singleton pattern
 export class CommandService {
     private model: GenerativeModel;
     private browser?: Browser;
     private page?: Page;
+    private static instance: CommandService;
 
-    constructor() {
+    private constructor() {
         const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY || "")
         this.model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" })
     }
 
+    public static getInstance(): CommandService {
+        if(!CommandService.instance) {
+            CommandService.instance = new CommandService();
+        } 
+        return CommandService.instance
+    }
+
     public async setNavigation(url: string): Promise<void> {
         this.browser = await puppeteer.launch()
-        this.page = await this.browser.newPage();
-        this.page.goto(url)
+        this.page = await this.browser?.newPage();
+        await this.page?.goto(url)
     }
 
     public async closeNavigation() {
@@ -58,9 +67,9 @@ export class CommandService {
     }
 
     // Get the product desc from url and process it using generative ai.
-    public async getDescAsync(url: string): Promise<string> {
+    public async getDescAsync(): Promise<string> {
         try {
-            const title: string = await this.getTitleAsync(url)
+            const title: string = await this.getTitleAsync()
             const prompt: string = `
             Given this product title: ${title}. 
             Write me a short (1-2 sentence) product description to increase sales. Put it in the following JSON format:
@@ -87,7 +96,7 @@ export class CommandService {
     }
 
     // Get the product title form url and process it using generative ai.
-    public async getTitleAsync(url: string): Promise<string> {
+    public async getTitleAsync(): Promise<string> {
         try {
             const title: string = await this.page?.evaluate(() => {
                 const titleElement = document.querySelector('h1[data-pl="product-title"]');
@@ -108,7 +117,7 @@ export class CommandService {
     }
 
     // Download product images from url
-    public async downloadImagesAsync(url: string, destination: string): Promise<string> {
+    public async downloadImagesAsync(destination: string): Promise<string> {
         try {
             if (!fs.existsSync(destination)) 
                 fs.mkdirSync(destination);

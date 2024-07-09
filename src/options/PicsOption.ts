@@ -6,20 +6,14 @@ export class PicsOption implements IOption {
     public name: string;
     
     private destination: string;
-    private param: string;
 
     constructor(private readonly commandService: CommandService) {
         this.name = '--pics'
         this.destination = path.join(process.cwd(), 'product_images');
-        this.param = ''
-    }
-
-    public setParam(value: string): void {
-        this.param = value;
     }
 
     public async executeAsync(): Promise<string> {
-        const result = await this.commandService.downloadImagesAsync(this.param, this.destination)
+        const result = await this.commandService.downloadImagesAsync(this.destination)
         return result
     }
 

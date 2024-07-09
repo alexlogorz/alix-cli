@@ -7,10 +7,13 @@ import { CommandService } from "./services/CommandService";
 
 dotenv.config({ path: path.join(__dirname, './../.env') });
 
-const commandService: CommandService = new CommandService();
+// Injecting singleton
+const alix = new CLI(CommandService.getInstance());
 
-// Takes the cli args and sets the target command for execution.
-const alix = new CLI(commandService);
-
+// The ClI will take the command line args from the user and process them.
+console.log('Processing...')
 alix.executeAsync()
-.then(result => console.log(result))
+.then(result => { 
+    console.log(result)
+    console.log('...Done')
+})

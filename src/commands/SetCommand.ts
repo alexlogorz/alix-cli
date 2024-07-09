@@ -18,7 +18,7 @@ export class SetCommand implements ICommand {
     public setOptions(options: string[] = []): void {
         try {
             if(options.length > 0) 
-                throw new CustomErrorException('Options error:', 'This command only takes an api eky. Type alix help for more info.')
+                throw new CustomErrorException('Options error:', 'This command only takes an api key. Type alix help for more info.')
         }
         catch(error: any) {
             console.error(error.errorCode, error.message)
